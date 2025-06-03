@@ -75,15 +75,25 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
           type: BottomNavigationBarType.fixed,
+          backgroundColor: Colors.white.withOpacity(0.9),
+          elevation: 10,
           selectedItemColor: const Color(0xFF8B4513),
-          unselectedItemColor: Colors.grey,
+          unselectedItemColor: Colors.grey.withOpacity(0.6),
+          selectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w600,
+            fontSize: 12,
+          ),
+          unselectedLabelStyle: const TextStyle(
+            fontWeight: FontWeight.w400,
+            fontSize: 12,
+          ),
           items: [
             const BottomNavigationBarItem(
-              icon: Icon(Icons.home),
+              icon: Icon(Icons.home, size: 28),
               label: 'Home',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.restaurant_menu),
+              icon: Icon(Icons.restaurant_menu, size: 28),
               label: 'Menu',
             ),
             BottomNavigationBarItem(
@@ -91,26 +101,34 @@ class _HomeScreenState extends State<HomeScreen> {
                 builder: (context, cart, child) {
                   return Stack(
                     children: [
-                      const Icon(Icons.shopping_cart),
+                      const Icon(Icons.shopping_cart, size: 28),
                       if (cart.itemCount > 0)
                         Positioned(
                           right: 0,
                           top: 0,
                           child: Container(
-                            padding: const EdgeInsets.all(2),
+                            padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.red,
-                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.redAccent.withOpacity(0.3),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
                             ),
                             constraints: const BoxConstraints(
-                              minWidth: 16,
-                              minHeight: 16,
+                              minWidth: 18,
+                              minHeight: 18,
                             ),
                             child: Text(
                               '${cart.itemCount}',
                               style: const TextStyle(
                                 color: Colors.white,
-                                fontSize: 12,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -123,11 +141,11 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Cart',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.history),
+              icon: Icon(Icons.history, size: 28),
               label: 'Orders',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.person),
+              icon: Icon(Icons.person, size: 28),
               label: 'Profile',
             ),
           ],
@@ -139,8 +157,28 @@ class _HomeScreenState extends State<HomeScreen> {
               MaterialPageRoute(builder: (context) => const ChatbotScreen()),
             );
           },
-          backgroundColor: const Color(0xFF8B4513),
-          child: const Icon(Icons.chat, color: Colors.white),
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          child: Container(
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              gradient: const LinearGradient(
+                colors: [Color(0xFF8B4513), Color(0xFFA0522D)],
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+              ),
+              boxShadow: [
+                BoxShadow(
+                  color: const Color(0xFF8B4513).withOpacity(0.3),
+                  blurRadius: 8,
+                  offset: const Offset(0, 4),
+                ),
+              ],
+            ),
+            child: const Center(
+              child: Icon(Icons.chat, color: Colors.white, size: 24),
+            ),
+          ),
         ),
       ),
     );
@@ -152,197 +190,235 @@ class HomeTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Center(child: const Text('ShakeWake I-8')),
-        automaticallyImplyLeading: false,
-        actions: [
-          Consumer<CartProvider>(
-            builder: (context, cart, child) {
-              return IconButton(
-                icon: Stack(
-                  children: [
-                    const Icon(Icons.shopping_cart),
-                    if (cart.itemCount > 0)
-                      Positioned(
-                        right: 0,
-                        top: 0,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          decoration: BoxDecoration(
-                            color: Colors.red,
-                            borderRadius: BorderRadius.circular(10),
-                          ),
-                          constraints: const BoxConstraints(
-                            minWidth: 16,
-                            minHeight: 16,
-                          ),
-                          child: Text(
-                            '${cart.itemCount}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                            ),
-                            textAlign: TextAlign.center,
-                          ),
-                        ),
-                      ),
-                  ],
+    return CustomScrollView(
+      slivers: [
+        // Custom Header
+        SliverAppBar(
+          expandedHeight: 200,
+          floating: false,
+          pinned: true,
+          flexibleSpace: FlexibleSpaceBar(
+            titlePadding: const EdgeInsets.only(bottom: 16, left: 16),
+            background: Stack(
+              fit: StackFit.expand,
+              children: [
+                Image.asset(
+                  'assets/home.png',
+                  fit: BoxFit.cover,
+                  errorBuilder: (context, error, stackTrace) => Container(
+                    color: Colors.grey[300],
+                  ),
                 ),
-                onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const CartScreen()),
-                  );
-                },
-              );
-            },
+                Container(
+                  decoration: BoxDecoration(
+                    gradient: LinearGradient(
+                      colors: [
+                        Colors.black.withOpacity(0.7),
+                        Colors.black.withOpacity(0.4),
+                      ],
+                      begin: Alignment.topCenter,
+                      end: Alignment.bottomCenter,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ),
-        ],
-      ),
-      body: SingleChildScrollView(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            // Welcome Section
-            Container(
-              width: double.infinity,
-              padding: const EdgeInsets.all(20),
-              decoration: const BoxDecoration(
-                gradient: LinearGradient(
-                  colors: [Color(0xFF8B4513), Color(0xFFA0522D)],
-                  begin: Alignment.topLeft,
-                  end: Alignment.bottomRight,
-                ),
-              ),
-              child: Consumer<AuthProvider>(
-                builder: (context, auth, child) {
-                  return Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+          actions: [
+            Consumer<CartProvider>(
+              builder: (context, cart, child) {
+                return IconButton(
+                  icon: Stack(
                     children: [
-                      Text(
-                        'Thirsty? , ${auth.user?.name ?? 'Guest'}!',
-                        style: const TextStyle(
-                          fontSize: 24,
-                          fontWeight: FontWeight.bold,
-                          color: Colors.white,
-                        ),
-                      ),
-                      const SizedBox(height: 8),
-                      const Text(
-                        'What would you like to drink today?',
-                        style: TextStyle(
-                          fontSize: 16,
-                          color: Colors.white70,
-                        ),
-                      ),
-                    ],
-                  );
-                },
-              ),
-            ),
-
-            // Quick Actions
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Quick Actions',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    children: [
-                      Expanded(
-                        child: _QuickActionCard(
-                          icon: Icons.restaurant_menu,
-                          title: 'Browse Menu',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) => const MenuScreen(),
+                      const Icon(Icons.shopping_cart,
+                          color: Colors.white, size: 28),
+                      if (cart.itemCount > 0)
+                        Positioned(
+                          right: 0,
+                          top: 0,
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: BoxDecoration(
+                              color: Colors.redAccent,
+                              borderRadius: BorderRadius.circular(12),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.redAccent.withOpacity(0.3),
+                                  blurRadius: 6,
+                                  offset: const Offset(0, 2),
+                                ),
+                              ],
+                            ),
+                            constraints: const BoxConstraints(
+                              minWidth: 18,
+                              minHeight: 18,
+                            ),
+                            child: Text(
+                              '${cart.itemCount}',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontSize: 10,
+                                fontWeight: FontWeight.bold,
                               ),
-                            );
-                          },
+                              textAlign: TextAlign.center,
+                            ),
+                          ),
                         ),
-                      ),
-                      const SizedBox(width: 12),
-                      Expanded(
-                        child: _QuickActionCard(
-                          icon: Icons.history,
-                          title: 'Order History',
-                          onTap: () {
-                            Navigator.push(
-                              context,
-                              MaterialPageRoute(
-                                builder: (context) =>
-                                    const OrderHistoryScreen(),
-                              ),
-                            );
-                          },
-                        ),
-                      ),
                     ],
                   ),
-                ],
-              ),
-            ),
-
-            // Featured Products
-            Padding(
-              padding: const EdgeInsets.all(16),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Featured Products',
-                    style: TextStyle(
-                      fontSize: 20,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const SizedBox(height: 16),
-                  Consumer<ProductProvider>(
-                    builder: (context, productProvider, child) {
-                      if (productProvider.isLoading) {
-                        return const Center(
-                          child: CircularProgressIndicator(),
-                        );
-                      }
-
-                      final featuredProducts =
-                          productProvider.products.take(4).toList();
-
-                      return GridView.builder(
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 0.8,
-                          crossAxisSpacing: 12,
-                          mainAxisSpacing: 12,
-                        ),
-                        itemCount: featuredProducts.length,
-                        itemBuilder: (context, index) {
-                          final product = featuredProducts[index];
-                          return _ProductCard(product: product);
-                        },
-                      );
-                    },
-                  ),
-                ],
-              ),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartScreen()),
+                    );
+                  },
+                );
+              },
             ),
           ],
         ),
-      ),
+
+        // Welcome Section
+        SliverToBoxAdapter(
+          child: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
+            child: Consumer<AuthProvider>(
+              builder: (context, auth, child) {
+                return Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      'Hello, ${auth.user?.name ?? 'Guest'}!',
+                      style: const TextStyle(
+                        fontSize: 28,
+                        fontWeight: FontWeight.w700,
+                        color: Color(0xFF333333),
+                      ),
+                    ),
+                    const SizedBox(height: 8),
+                    Text(
+                      'Discover your favorite drinks today.',
+                      style: TextStyle(
+                        fontSize: 16,
+                        color: Colors.grey[600],
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                );
+              },
+            ),
+          ),
+        ),
+
+        // Quick Actions
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Quick Actions',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF333333),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Row(
+                  children: [
+                    Expanded(
+                      child: _QuickActionCard(
+                        icon: Icons.restaurant_menu,
+                        title: 'Browse Menu',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const MenuScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: _QuickActionCard(
+                        icon: Icons.history,
+                        title: 'Order History',
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => const OrderHistoryScreen(),
+                            ),
+                          );
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+        ),
+
+        // Featured Products
+        SliverToBoxAdapter(
+          child: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  'Featured Products',
+                  style: TextStyle(
+                    fontSize: 20,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF333333),
+                  ),
+                ),
+                const SizedBox(height: 16),
+                Consumer<ProductProvider>(
+                  builder: (context, productProvider, child) {
+                    if (productProvider.isLoading) {
+                      return const Center(
+                        child: CircularProgressIndicator(
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Color(0xFF8B4513)),
+                        ),
+                      );
+                    }
+
+                    final featuredProducts =
+                        productProvider.products.take(4).toList();
+
+                    return GridView.builder(
+                      shrinkWrap: true,
+                      physics: const NeverScrollableScrollPhysics(),
+                      gridDelegate:
+                          const SliverGridDelegateWithFixedCrossAxisCount(
+                        crossAxisCount: 2,
+                        childAspectRatio: 0.8,
+                        crossAxisSpacing: 12,
+                        mainAxisSpacing: 12,
+                      ),
+                      itemCount: featuredProducts.length,
+                      itemBuilder: (context, index) {
+                        final product = featuredProducts[index];
+                        return _ProductCard(product: product);
+                      },
+                    );
+                  },
+                ),
+              ],
+            ),
+          ),
+        ),
+      ],
     );
   }
 }
@@ -362,11 +438,15 @@ class _QuickActionCard extends StatelessWidget {
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
-      child: Container(
-        padding: const EdgeInsets.all(16),
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(12),
+          border: Border.all(
+            color: const Color(0xFF8B4513),
+            width: 2,
+          ),
           boxShadow: [
             BoxShadow(
               color: Colors.grey.withOpacity(0.1),
@@ -376,6 +456,7 @@ class _QuickActionCard extends StatelessWidget {
             ),
           ],
         ),
+        padding: const EdgeInsets.all(16),
         child: Column(
           children: [
             Icon(
@@ -389,6 +470,7 @@ class _QuickActionCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
+                color: Color(0xFF333333),
               ),
               textAlign: TextAlign.center,
             ),
@@ -406,7 +488,8 @@ class _ProductCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
         color: Colors.white,
         borderRadius: BorderRadius.circular(12),
@@ -423,14 +506,17 @@ class _ProductCard extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Expanded(
-            child: Container(
-              width: double.infinity,
-              decoration: BoxDecoration(
-                borderRadius:
-                    const BorderRadius.vertical(top: Radius.circular(12)),
-                image: DecorationImage(
-                  image: NetworkImage(product.imageUrl),
-                  fit: BoxFit.cover,
+            child: ClipRRect(
+              borderRadius:
+                  const BorderRadius.vertical(top: Radius.circular(12)),
+              child: Image.network(
+                product.imageUrl,
+                fit: BoxFit.cover,
+                width: double.infinity,
+                errorBuilder: (context, error, stackTrace) => Container(
+                  color: Colors.grey[300],
+                  child:
+                      const Icon(Icons.image_not_supported, color: Colors.grey),
                 ),
               ),
             ),
@@ -444,7 +530,8 @@ class _ProductCard extends StatelessWidget {
                   product.name,
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.bold,
+                    fontWeight: FontWeight.w700,
+                    color: Color(0xFF333333),
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -469,15 +556,29 @@ class _ProductCard extends StatelessWidget {
                         SnackBar(
                           content: Text('${product.name} added to cart'),
                           duration: const Duration(seconds: 1),
+                          backgroundColor: const Color(0xFF8B4513),
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       );
                     },
                     style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color(0xFF8B4513),
+                      foregroundColor: Colors.white,
                       padding: const EdgeInsets.symmetric(vertical: 8),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      elevation: 2,
                     ),
                     child: const Text(
                       'Add to Cart',
-                      style: TextStyle(fontSize: 12),
+                      style: TextStyle(
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                      ),
                     ),
                   ),
                 ),
