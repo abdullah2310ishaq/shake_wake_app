@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../../providers/auth_provider.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -32,7 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Future<void> _signUp() async {
     if (_formKey.currentState!.validate()) {
       final authProvider = Provider.of<AuthProvider>(context, listen: false);
-      
+
       bool success = await authProvider.signUp(
         email: _emailController.text.trim(),
         password: _passwordController.text,
@@ -44,9 +48,16 @@ class _SignUpScreenState extends State<SignUpScreen> {
         Navigator.pushReplacementNamed(context, '/home');
       } else if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Sign up failed. Please try again.'),
-            backgroundColor: Colors.red,
+          SnackBar(
+            content: const Text(
+              'Sign up failed. Please try again.',
+              style: TextStyle(color: blackColor), // Text to black
+            ),
+            backgroundColor: mustardColor, // Background to mustard
+            behavior: SnackBarBehavior.floating,
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(10),
+            ),
           ),
         );
       }
@@ -55,68 +66,120 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
-        backgroundColor: Colors.transparent,
+        backgroundColor: blackColor, // AppBar background to black
         elevation: 0,
-        iconTheme: const IconThemeData(color: Color(0xFF8B4513)),
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
       body: SafeArea(
         child: SingleChildScrollView(
-          padding: const EdgeInsets.all(24.0),
+          padding:
+              EdgeInsets.all(screenSize.width * 0.06), // 6% of screen width
           child: Form(
             key: _formKey,
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 // Logo
-                Container(
-                  width: 80,
-                  height: 80,
-                  decoration: BoxDecoration(
-                    color: const Color(0xFF8B4513),
-                    borderRadius: BorderRadius.circular(40),
-                  ),
-                  child: const Icon(
-                    Icons.local_cafe,
-                    size: 40,
-                    color: Colors.white,
+                Center(
+                  child: ClipRRect(
+                    borderRadius: BorderRadius.circular(
+                        screenSize.width * 0.1), // 10% of screen width
+                    child: Image.asset(
+                      'assets/logo.jpg',
+                      width: screenSize.width * 0.3, // 20% of screen width
+                      height: screenSize.width * 0.3, // Keep square
+                      fit: BoxFit.fitHeight,
+                      errorBuilder: (context, error, stackTrace) => Container(
+                        width: screenSize.width * 0.2,
+                        height: screenSize.width * 0.2,
+                        decoration: BoxDecoration(
+                          color: mustardColor.withOpacity(
+                              0.2), // Fallback background to mustard
+                          borderRadius:
+                              BorderRadius.circular(screenSize.width * 0.1),
+                        ),
+                        child: Icon(
+                          Icons.local_cafe,
+                          size: screenSize.width * 0.1, // 10% of screen width
+                          color: mustardColor, // Icon to mustard
+                        ),
+                      ),
+                    ),
                   ),
                 ),
-                const SizedBox(height: 24),
-                
-                const Text(
+                SizedBox(
+                    height: screenSize.height * 0.03), // 3% of screen height
+
+                // Title
+                Text(
                   'Create Account',
                   style: TextStyle(
-                    fontSize: 28,
+                    fontSize: screenSize.width * 0.07, // 7% of screen width
                     fontWeight: FontWeight.bold,
-                    color: Color(0xFF8B4513),
+                    color: mustardColor, // Text to mustard
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 8),
-                
-                const Text(
+                SizedBox(
+                    height: screenSize.height * 0.01), // 1% of screen height
+
+                // Subtitle
+                Text(
                   'Join ShakeWake I-8 family',
                   style: TextStyle(
-                    fontSize: 16,
-                    color: Colors.grey,
+                    fontSize: screenSize.width * 0.04, // 4% of screen width
+                    color: mustardColor
+                        .withOpacity(0.6), // Text to lighter mustard
                   ),
                   textAlign: TextAlign.center,
                 ),
-                const SizedBox(height: 32),
+                SizedBox(
+                    height: screenSize.height * 0.04), // 4% of screen height
 
                 // Name Field
                 TextFormField(
                   controller: _nameController,
                   decoration: InputDecoration(
                     labelText: 'Full Name',
-                    prefixIcon: const Icon(Icons.person),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    labelStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Label to lighter mustard
+                    prefixIcon: Icon(Icons.person,
+                        color: mustardColor), // Icon to mustard
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
+                      borderRadius: BorderRadius.circular(
+                          screenSize.width * 0.02), // 2% of screen width
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: mustardColor), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.5)), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
                     ),
                   ),
+                  style: TextStyle(color: mustardColor), // Text to mustard
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your full name';
@@ -127,7 +190,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(
+                    height: screenSize.height * 0.02), // 2% of screen height
 
                 // Email Field
                 TextFormField(
@@ -135,22 +199,52 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.emailAddress,
                   decoration: InputDecoration(
                     labelText: 'Email',
-                    prefixIcon: const Icon(Icons.email),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    labelStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Label to lighter mustard
+                    prefixIcon: Icon(Icons.email,
+                        color: mustardColor), // Icon to mustard
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: mustardColor), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.5)), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
                     ),
                   ),
+                  style: TextStyle(color: mustardColor), // Text to mustard
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your email';
                     }
-                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$').hasMatch(value)) {
+                    if (!RegExp(r'^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$')
+                        .hasMatch(value)) {
                       return 'Please enter a valid email';
                     }
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(
+                    height: screenSize.height * 0.02), // 2% of screen height
 
                 // Phone Field
                 TextFormField(
@@ -158,11 +252,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   keyboardType: TextInputType.phone,
                   decoration: InputDecoration(
                     labelText: 'Phone Number',
-                    prefixIcon: const Icon(Icons.phone),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    labelStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Label to lighter mustard
+                    prefixIcon: Icon(Icons.phone,
+                        color: mustardColor), // Icon to mustard
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: mustardColor), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.5)), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
                     ),
                   ),
+                  style: TextStyle(color: mustardColor), // Text to mustard
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter your phone number';
@@ -173,7 +295,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(
+                    height: screenSize.height * 0.02), // 2% of screen height
 
                 // Password Field
                 TextFormField(
@@ -181,10 +304,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: _obscurePassword,
                   decoration: InputDecoration(
                     labelText: 'Password',
-                    prefixIcon: const Icon(Icons.lock),
+                    labelStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Label to lighter mustard
+                    prefixIcon: Icon(Icons.lock,
+                        color: mustardColor), // Icon to mustard
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscurePassword ? Icons.visibility : Icons.visibility_off,
+                        _obscurePassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: mustardColor, // Icon to mustard
                       ),
                       onPressed: () {
                         setState(() {
@@ -192,10 +322,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: mustardColor), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.5)), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
                     ),
                   ),
+                  style: TextStyle(color: mustardColor), // Text to mustard
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please enter a password';
@@ -206,7 +360,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(
+                    height: screenSize.height * 0.02), // 2% of screen height
 
                 // Confirm Password Field
                 TextFormField(
@@ -214,10 +369,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   obscureText: _obscureConfirmPassword,
                   decoration: InputDecoration(
                     labelText: 'Confirm Password',
-                    prefixIcon: const Icon(Icons.lock_outline),
+                    labelStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Label to lighter mustard
+                    prefixIcon: Icon(Icons.lock_outline,
+                        color: mustardColor), // Icon to mustard
                     suffixIcon: IconButton(
                       icon: Icon(
-                        _obscureConfirmPassword ? Icons.visibility : Icons.visibility_off,
+                        _obscureConfirmPassword
+                            ? Icons.visibility
+                            : Icons.visibility_off,
+                        color: mustardColor, // Icon to mustard
                       ),
                       onPressed: () {
                         setState(() {
@@ -225,10 +387,34 @@ class _SignUpScreenState extends State<SignUpScreen> {
                         });
                       },
                     ),
-                    border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(8),
+                    enabledBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderSide:
+                          BorderSide(color: mustardColor), // Border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    errorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor
+                              .withOpacity(0.5)), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
+                    ),
+                    focusedErrorBorder: OutlineInputBorder(
+                      borderSide: BorderSide(
+                          color: mustardColor), // Error border to mustard
+                      borderRadius:
+                          BorderRadius.circular(screenSize.width * 0.02),
                     ),
                   ),
+                  style: TextStyle(color: mustardColor), // Text to mustard
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Please confirm your password';
@@ -239,7 +425,8 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return null;
                   },
                 ),
-                const SizedBox(height: 24),
+                SizedBox(
+                    height: screenSize.height * 0.03), // 3% of screen height
 
                 // Sign Up Button
                 Consumer<AuthProvider>(
@@ -247,33 +434,56 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     return ElevatedButton(
                       onPressed: authProvider.isLoading ? null : _signUp,
                       style: ElevatedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
+                        backgroundColor: mustardColor, // Background to mustard
+                        foregroundColor: blackColor, // Text/icon to black
+                        padding: EdgeInsets.symmetric(
+                            vertical: screenSize.height *
+                                0.02), // 2% of screen height
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              screenSize.width * 0.02), // 2% of screen width
+                        ),
+                        elevation: 2,
+                        textStyle: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.04), // 4% of screen width
                       ),
                       child: authProvider.isLoading
-                          ? const CircularProgressIndicator(color: Colors.white)
-                          : const Text(
-                              'Sign Up',
-                              style: TextStyle(fontSize: 16),
-                            ),
+                          ? CircularProgressIndicator(
+                              color: blackColor, // Indicator to black
+                              strokeWidth: 2,
+                            )
+                          : const Text('Sign Up'),
                     );
                   },
                 ),
-                const SizedBox(height: 16),
+                SizedBox(
+                    height: screenSize.height * 0.02), // 2% of screen height
 
                 // Login Link
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    const Text("Already have an account? "),
+                    Text(
+                      "Already have an account? ",
+                      style: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6), // Text to lighter mustard
+                        fontSize:
+                            screenSize.width * 0.035, // 3.5% of screen width
+                      ),
+                    ),
                     TextButton(
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      child: const Text(
+                      child: Text(
                         'Login',
                         style: TextStyle(
-                          color: Color(0xFF8B4513),
+                          color: mustardColor, // Text to mustard
                           fontWeight: FontWeight.bold,
+                          fontSize:
+                              screenSize.width * 0.035, // 3.5% of screen width
                         ),
                       ),
                     ),

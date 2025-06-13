@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class ChatbotScreen extends StatefulWidget {
   const ChatbotScreen({super.key});
 
@@ -29,9 +33,9 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   void _handleSubmitted(String text) {
     _messageController.clear();
-    
+
     if (text.trim().isEmpty) return;
-    
+
     setState(() {
       _messages.add(ChatMessage(
         text: text,
@@ -39,7 +43,7 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       ));
       _isTyping = true;
     });
-    
+
     // Simulate bot thinking
     Future.delayed(const Duration(seconds: 1), () {
       _respondToMessage(text);
@@ -58,46 +62,56 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   void _respondToMessage(String message) {
     final lowerMessage = message.toLowerCase();
-    
-    if (lowerMessage.contains('menu') || lowerMessage.contains('items') || 
-        lowerMessage.contains('products') || lowerMessage.contains('drinks')) {
+
+    if (lowerMessage.contains('menu') ||
+        lowerMessage.contains('items') ||
+        lowerMessage.contains('products') ||
+        lowerMessage.contains('drinks')) {
       _addBotMessage(
         'We offer a variety of beverages including coffee, shakes, smoothies, and more! '
         'You can check our full menu in the Menu tab.',
       );
-    } else if (lowerMessage.contains('hour') || lowerMessage.contains('open') || 
-               lowerMessage.contains('close') || lowerMessage.contains('timing')) {
+    } else if (lowerMessage.contains('hour') ||
+        lowerMessage.contains('open') ||
+        lowerMessage.contains('close') ||
+        lowerMessage.contains('timing')) {
       _addBotMessage(
         'ShakeWake I-8 is open from 9:00 AM to 11:00 PM, seven days a week.',
       );
-    } else if (lowerMessage.contains('location') || lowerMessage.contains('address') || 
-               lowerMessage.contains('where')) {
+    } else if (lowerMessage.contains('location') ||
+        lowerMessage.contains('address') ||
+        lowerMessage.contains('where')) {
       _addBotMessage(
         'We are located in Sector I-8, Islamabad. You can find us near the main market.',
       );
-    } else if (lowerMessage.contains('delivery') || lowerMessage.contains('time') || 
-               lowerMessage.contains('how long')) {
+    } else if (lowerMessage.contains('delivery') ||
+        lowerMessage.contains('time') ||
+        lowerMessage.contains('how long')) {
       _addBotMessage(
         'Our typical delivery time is 30-45 minutes, depending on your location and order volume.',
       );
-    } else if (lowerMessage.contains('payment') || lowerMessage.contains('pay') || 
-               lowerMessage.contains('cash') || lowerMessage.contains('card')) {
+    } else if (lowerMessage.contains('payment') ||
+        lowerMessage.contains('pay') ||
+        lowerMessage.contains('cash') ||
+        lowerMessage.contains('card')) {
       _addBotMessage(
         'We currently accept Cash on Delivery (COD) only.',
       );
-    } else if (lowerMessage.contains('order') && (lowerMessage.contains('track') || 
-               lowerMessage.contains('status'))) {
+    } else if (lowerMessage.contains('order') &&
+        (lowerMessage.contains('track') || lowerMessage.contains('status'))) {
       _addBotMessage(
         'You can track your order status in the Orders tab. If you have any specific concerns, '
         'please call us at 051-1234567.',
       );
-    } else if (lowerMessage.contains('cancel') && lowerMessage.contains('order')) {
+    } else if (lowerMessage.contains('cancel') &&
+        lowerMessage.contains('order')) {
       _addBotMessage(
         'To cancel an order, please call us immediately at 051-1234567. '
         'Note that orders already in preparation may not be eligible for cancellation.',
       );
-    } else if (lowerMessage.contains('hello') || lowerMessage.contains('hi') || 
-               lowerMessage.contains('hey')) {
+    } else if (lowerMessage.contains('hello') ||
+        lowerMessage.contains('hi') ||
+        lowerMessage.contains('hey')) {
       _addBotMessage(
         'Hello there! How can I assist you with ShakeWake today?',
       );
@@ -105,7 +119,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
       _addBotMessage(
         'You\'re welcome! Is there anything else I can help you with?',
       );
-    } else if (lowerMessage.contains('bye') || lowerMessage.contains('goodbye')) {
+    } else if (lowerMessage.contains('bye') ||
+        lowerMessage.contains('goodbye')) {
       _addBotMessage(
         'Thank you for chatting with ShakeWake! Have a great day!',
       );
@@ -119,27 +134,60 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
-        title: const Text('ShakeWake Assistant'),
+        title: const Text(
+          'ShakeWake Assistant',
+          style: TextStyle(color: mustardColor), // Title to mustard
+        ),
+        backgroundColor: blackColor, // AppBar background to black
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
         actions: [
           IconButton(
             icon: const Icon(Icons.info_outline),
+            color: mustardColor, // Icon to mustard
             onPressed: () {
               showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
-                  title: const Text('About ShakeWake Assistant'),
-                  content: const Text(
+                  backgroundColor: blackColor, // Dialog background to black
+                  title: Text(
+                    'About ShakeWake Assistant',
+                    style: TextStyle(
+                      color: mustardColor, // Title to mustard
+                      fontSize: screenSize.width * 0.05, // 5% of screen width
+                    ),
+                  ),
+                  content: Text(
                     'This is a simple rule-based chatbot to help with basic queries. '
-                    'For complex issues, please contact our customer support at 051-1234567.',
+                    'For complex issues, please contact our customer support at 0300 0099222.',
+                    style: TextStyle(
+                      color: mustardColor
+                          .withOpacity(0.6), // Text to lighter mustard
+                      fontSize: screenSize.width * 0.04, // 4% of screen width
+                    ),
                   ),
                   actions: [
                     TextButton(
                       onPressed: () => Navigator.pop(context),
-                      child: const Text('OK'),
+                      child: Text(
+                        'OK',
+                        style: TextStyle(
+                          color: mustardColor, // Text to mustard
+                          fontSize:
+                              screenSize.width * 0.04, // 4% of screen width
+                        ),
+                      ),
                     ),
                   ],
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        screenSize.width * 0.03), // 3% of screen width
+                  ),
                 ),
               );
             },
@@ -150,7 +198,8 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
         children: [
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.all(16),
+              padding:
+                  EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
               reverse: true,
               itemCount: _messages.length,
               itemBuilder: (context, index) {
@@ -160,48 +209,71 @@ class _ChatbotScreenState extends State<ChatbotScreen> {
           ),
           if (_isTyping)
             Container(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+              padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.04, // 4% of screen width
+                vertical: screenSize.height * 0.01, // 1% of screen height
+              ),
               alignment: Alignment.centerLeft,
-              child: const Row(
+              child: Row(
                 children: [
                   SizedBox(
-                    width: 20,
-                    height: 20,
+                    width: screenSize.width * 0.05, // 5% of screen width
+                    height: screenSize.width * 0.05, // Keep square
                     child: CircularProgressIndicator(
                       strokeWidth: 2,
-                      color: Color(0xFF8B4513),
+                      color: mustardColor, // Indicator to mustard
                     ),
                   ),
-                  SizedBox(width: 8),
+                  SizedBox(
+                      width: screenSize.width * 0.02), // 2% of screen width
                   Text(
                     'Typing...',
                     style: TextStyle(
-                      color: Colors.grey,
+                      color: mustardColor
+                          .withOpacity(0.6), // Text to lighter mustard
                       fontStyle: FontStyle.italic,
+                      fontSize:
+                          screenSize.width * 0.035, // 3.5% of screen width
                     ),
                   ),
                 ],
               ),
             ),
-          const Divider(height: 1),
+          Divider(
+            height: 1,
+            color: mustardColor.withOpacity(0.3), // Divider to mustard
+          ),
           Container(
-            padding: const EdgeInsets.symmetric(horizontal: 8),
+            padding: EdgeInsets.symmetric(
+                horizontal: screenSize.width * 0.02), // 2% of screen width
+            color: blackColor, // Background to black
             child: Row(
               children: [
                 Expanded(
                   child: TextField(
                     controller: _messageController,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: 'Ask me anything...',
+                      hintStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6), // Hint to lighter mustard
+                        fontSize: screenSize.width * 0.04, // 4% of screen width
+                      ),
                       border: InputBorder.none,
-                      contentPadding: EdgeInsets.all(16),
+                      contentPadding: EdgeInsets.all(
+                          screenSize.width * 0.04), // 4% of screen width
+                    ),
+                    style: TextStyle(
+                      color: mustardColor, // Text to mustard
+                      fontSize: screenSize.width * 0.04, // 4% of screen width
                     ),
                     onSubmitted: _handleSubmitted,
                   ),
                 ),
                 IconButton(
                   icon: const Icon(Icons.send),
-                  color: const Color(0xFF8B4513),
+                  color: mustardColor, // Icon to mustard
+                  iconSize: screenSize.width * 0.06, // 6% of screen width
                   onPressed: () => _handleSubmitted(_messageController.text),
                 ),
               ],
@@ -225,46 +297,57 @@ class ChatMessage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8),
+      margin: EdgeInsets.symmetric(
+          vertical: screenSize.height * 0.01), // 1% of screen height
       child: Row(
-        mainAxisAlignment: isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
+        mainAxisAlignment:
+            isUser ? MainAxisAlignment.end : MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           if (!isUser) ...[
             Container(
-              width: 36,
-              height: 36,
+              width: screenSize.width * 0.09, // 9% of screen width
+              height: screenSize.width * 0.09, // Keep square
               decoration: BoxDecoration(
-                color: const Color(0xFF8B4513),
-                borderRadius: BorderRadius.circular(18),
+                color: mustardColor, // Background to mustard
+                borderRadius: BorderRadius.circular(
+                    screenSize.width * 0.045), // Half of width
               ),
-              child: const Icon(
+              child: Icon(
                 Icons.coffee,
-                color: Colors.white,
-                size: 20,
+                color: blackColor, // Icon to black
+                size: screenSize.width * 0.05, // 5% of screen width
               ),
             ),
-            const SizedBox(width: 8),
+            SizedBox(width: screenSize.width * 0.02), // 2% of screen width
           ],
           Flexible(
             child: Container(
-              padding: const EdgeInsets.all(12),
+              padding:
+                  EdgeInsets.all(screenSize.width * 0.03), // 3% of screen width
               decoration: BoxDecoration(
                 color: isUser
-                    ? const Color(0xFF8B4513)
-                    : Colors.grey.shade200,
-                borderRadius: BorderRadius.circular(16),
+                    ? mustardColor // User bubble to mustard
+                    : mustardColor
+                        .withOpacity(0.2), // Bot bubble to lighter mustard
+                borderRadius: BorderRadius.circular(
+                    screenSize.width * 0.04), // 4% of screen width
               ),
               child: Text(
                 text,
                 style: TextStyle(
-                  color: isUser ? Colors.white : Colors.black,
+                  color: blackColor, // Text to black
+                  fontSize: screenSize.width * 0.04, // 4% of screen width
                 ),
               ),
             ),
           ),
-          if (isUser) const SizedBox(width: 8),
+          if (isUser)
+            SizedBox(width: screenSize.width * 0.02), // 2% of screen width
         ],
       ),
     );
