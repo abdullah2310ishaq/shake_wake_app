@@ -2,28 +2,42 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import '../../providers/auth_provider.dart';
 import '../../providers/admin_provider.dart';
-
 import '../admin/admin_dashboard_screen.dart';
+
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return ChangeNotifierProvider(
       create: (_) => AdminProvider(),
       child: Scaffold(
+        backgroundColor: blackColor, // Set scaffold background to black
         appBar: AppBar(
-          title: const Text('My Profile'),
+          title: const Text('My Profile',
+              style: TextStyle(color: mustardColor)), // Title to mustard
+          backgroundColor: blackColor, // AppBar background to black
           automaticallyImplyLeading: false,
+          iconTheme:
+              const IconThemeData(color: mustardColor), // Icons to mustard
         ),
         body: Consumer<AuthProvider>(
           builder: (context, authProvider, child) {
             if (authProvider.user == null) {
-              return const Center(
+              return Center(
                 child: Text(
                   'Please login to view your profile',
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.04, // 4% of screen width
+                    color: mustardColor, // Text to mustard
+                  ),
                 ),
               );
             }
@@ -31,7 +45,8 @@ class ProfileScreen extends StatelessWidget {
             final user = authProvider.user!;
 
             return SingleChildScrollView(
-              padding: const EdgeInsets.all(16),
+              padding:
+                  EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
@@ -40,93 +55,134 @@ class ProfileScreen extends StatelessWidget {
                     child: Column(
                       children: [
                         Container(
-                          width: 100,
-                          height: 100,
+                          width: screenSize.width * 0.25, // 25% of screen width
+                          height: screenSize.width * 0.25, // Keep square
                           decoration: BoxDecoration(
-                            color: const Color(0xFF8B4513).withOpacity(0.1),
+                            color: mustardColor
+                                .withOpacity(0.1), // Background to mustard
                             shape: BoxShape.circle,
                             border: Border.all(
-                              color: const Color(0xFF8B4513),
+                              color: mustardColor, // Border to mustard
                               width: 2,
                             ),
                           ),
                           child: Center(
                             child: user.profileImage != null
                                 ? ClipRRect(
-                                    borderRadius: BorderRadius.circular(50),
+                                    borderRadius: BorderRadius.circular(
+                                        screenSize.width *
+                                            0.125), // Half of container width
                                     child: Image.network(
                                       user.profileImage!,
-                                      width: 100,
-                                      height: 100,
+                                      width: screenSize.width * 0.25,
+                                      height: screenSize.width * 0.25,
                                       fit: BoxFit.cover,
+                                      errorBuilder:
+                                          (context, error, stackTrace) => Text(
+                                        user.name.isNotEmpty
+                                            ? user.name[0].toUpperCase()
+                                            : 'U',
+                                        style: TextStyle(
+                                          fontSize: screenSize.width *
+                                              0.1, // 10% of screen width
+                                          fontWeight: FontWeight.bold,
+                                          color:
+                                              mustardColor, // Text to mustard
+                                        ),
+                                      ),
                                     ),
                                   )
                                 : Text(
                                     user.name.isNotEmpty
                                         ? user.name[0].toUpperCase()
                                         : 'U',
-                                    style: const TextStyle(
-                                      fontSize: 40,
+                                    style: TextStyle(
+                                      fontSize: screenSize.width *
+                                          0.1, // 10% of screen width
                                       fontWeight: FontWeight.bold,
-                                      color: Color(0xFF8B4513),
+                                      color: mustardColor, // Text to mustard
                                     ),
                                   ),
                           ),
                         ),
-                        const SizedBox(height: 16),
+                        SizedBox(
+                            height: screenSize.height *
+                                0.02), // 2% of screen height
                         Text(
                           user.name,
-                          style: const TextStyle(
-                            fontSize: 24,
+                          style: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.06, // 6% of screen width
                             fontWeight: FontWeight.bold,
+                            color: mustardColor, // Text to mustard
                           ),
                         ),
-                        const SizedBox(height: 4),
+                        SizedBox(
+                            height: screenSize.height *
+                                0.005), // 0.5% of screen height
                         Text(
                           user.email,
-                          style: const TextStyle(
-                            fontSize: 16,
-                            color: Colors.grey,
+                          style: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.04, // 4% of screen width
+                            color: mustardColor
+                                .withOpacity(0.6), // Text to lighter mustard
                           ),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 32),
+                  SizedBox(
+                      height: screenSize.height * 0.04), // 4% of screen height
 
-                  // Admin Access (Temporary)
+                  // Admin Access
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: EdgeInsets.all(
+                        screenSize.width * 0.04), // 4% of screen width
                     decoration: BoxDecoration(
-                      color: Colors.red.withOpacity(0.1),
-                      borderRadius: BorderRadius.circular(12),
-                      border: Border.all(color: Colors.red.withOpacity(0.3)),
+                      color: mustardColor
+                          .withOpacity(0.1), // Background to mustard
+                      borderRadius: BorderRadius.circular(
+                          screenSize.width * 0.03), // 3% of screen width
+                      border: Border.all(
+                          color: mustardColor
+                              .withOpacity(0.3)), // Border to mustard
                     ),
                     child: Column(
                       children: [
-                        const Icon(
+                        Icon(
                           Icons.admin_panel_settings,
-                          size: 32,
-                          color: Colors.red,
+                          size: screenSize.width * 0.08, // 8% of screen width
+                          color: mustardColor, // Icon to mustard
                         ),
-                        const SizedBox(height: 8),
-                        const Text(
+                        SizedBox(
+                            height: screenSize.height *
+                                0.01), // 1% of screen height
+                        Text(
                           'Admin Panel',
                           style: TextStyle(
-                            fontSize: 18,
+                            fontSize: screenSize.width *
+                                0.045, // 4.5% of screen width
                             fontWeight: FontWeight.bold,
+                            color: mustardColor, // Text to mustard
                           ),
                         ),
-                        const SizedBox(height: 4),
-                        const Text(
+                        SizedBox(
+                            height: screenSize.height *
+                                0.005), // 0.5% of screen height
+                        Text(
                           'Manage products and menu items',
                           style: TextStyle(
-                            fontSize: 14,
-                            color: Colors.grey,
+                            fontSize: screenSize.width *
+                                0.035, // 3.5% of screen width
+                            color: mustardColor
+                                .withOpacity(0.6), // Text to lighter mustard
                           ),
                         ),
-                        const SizedBox(height: 12),
+                        SizedBox(
+                            height: screenSize.height *
+                                0.015), // 1.5% of screen height
                         ElevatedButton(
                           onPressed: () {
                             Navigator.push(
@@ -138,31 +194,52 @@ class ProfileScreen extends StatelessWidget {
                             );
                           },
                           style: ElevatedButton.styleFrom(
-                            backgroundColor: Colors.red[700],
-                            foregroundColor: Colors.white,
+                            backgroundColor:
+                                mustardColor, // Background to mustard
+                            foregroundColor: blackColor, // Text/icon to black
+                            padding: EdgeInsets.symmetric(
+                              vertical: screenSize.height *
+                                  0.015, // 1.5% of screen height
+                              horizontal:
+                                  screenSize.width * 0.04, // 4% of screen width
+                            ),
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(
+                                  screenSize.width *
+                                      0.02), // 2% of screen width
+                            ),
+                            elevation: 2,
+                            textStyle: TextStyle(
+                                fontSize: screenSize.width *
+                                    0.04), // 4% of screen width
                           ),
                           child: const Text('Open Admin Panel'),
                         ),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(
+                      height: screenSize.height * 0.03), // 3% of screen height
 
                   // Profile Sections
-                  const Text(
+                  Text(
                     'Account Information',
                     style: TextStyle(
-                      fontSize: 18,
+                      fontSize:
+                          screenSize.width * 0.045, // 4.5% of screen width
                       fontWeight: FontWeight.bold,
+                      color: mustardColor, // Text to mustard
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(
+                      height: screenSize.height * 0.02), // 2% of screen height
                   _ProfileInfoCard(
                     icon: Icons.phone,
                     title: 'Phone Number',
                     value: user.phone,
                   ),
-                  const SizedBox(height: 16),
+                  SizedBox(
+                      height: screenSize.height * 0.02), // 2% of screen height
 
                   // Logout Button
                   SizedBox(
@@ -175,14 +252,25 @@ class ProfileScreen extends StatelessWidget {
                         }
                       },
                       style: OutlinedButton.styleFrom(
-                        padding: const EdgeInsets.symmetric(vertical: 16),
-                        side: const BorderSide(color: Colors.red),
-                        foregroundColor: Colors.red,
+                        padding: EdgeInsets.symmetric(
+                            vertical: screenSize.height *
+                                0.02), // 2% of screen height
+                        side: BorderSide(
+                            color: mustardColor), // Border to mustard
+                        foregroundColor: mustardColor, // Text/icon to mustard
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              screenSize.width * 0.02), // 2% of screen width
+                        ),
+                        textStyle: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.04), // 4% of screen width
                       ),
                       child: const Text('Logout'),
                     ),
                   ),
-                  const SizedBox(height: 24),
+                  SizedBox(
+                      height: screenSize.height * 0.03), // 3% of screen height
                 ],
               ),
             );
@@ -206,14 +294,18 @@ class _ProfileInfoCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Container(
-      padding: const EdgeInsets.all(16),
+      padding: EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        color: blackColor, // Background to black
+        borderRadius: BorderRadius.circular(
+            screenSize.width * 0.03), // 3% of screen width
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: mustardColor.withOpacity(0.1), // Shadow to mustard
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -224,25 +316,29 @@ class _ProfileInfoCard extends StatelessWidget {
         children: [
           Icon(
             icon,
-            color: const Color(0xFF8B4513),
+            color: mustardColor, // Icon to mustard
+            size: screenSize.width * 0.06, // 6% of screen width
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: screenSize.width * 0.04), // 4% of screen width
           Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 14,
-                  color: Colors.grey,
+                style: TextStyle(
+                  fontSize: screenSize.width * 0.035, // 3.5% of screen width
+                  color:
+                      mustardColor.withOpacity(0.6), // Text to lighter mustard
                 ),
               ),
-              const SizedBox(height: 4),
+              SizedBox(
+                  height: screenSize.height * 0.005), // 0.5% of screen height
               Text(
                 value,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: screenSize.width * 0.04, // 4% of screen width
                   fontWeight: FontWeight.bold,
+                  color: mustardColor, // Text to mustard
                 ),
               ),
             ],
@@ -266,16 +362,20 @@ class _SettingsCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          color: blackColor, // Background to black
+          borderRadius: BorderRadius.circular(
+              screenSize.width * 0.03), // 3% of screen width
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: mustardColor.withOpacity(0.1), // Shadow to mustard
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -286,22 +386,24 @@ class _SettingsCard extends StatelessWidget {
           children: [
             Icon(
               icon,
-              color: const Color(0xFF8B4513),
+              color: mustardColor, // Icon to mustard
+              size: screenSize.width * 0.06, // 6% of screen width
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: screenSize.width * 0.04), // 4% of screen width
             Expanded(
               child: Text(
                 title,
-                style: const TextStyle(
-                  fontSize: 16,
+                style: TextStyle(
+                  fontSize: screenSize.width * 0.04, // 4% of screen width
                   fontWeight: FontWeight.w500,
+                  color: mustardColor, // Text to mustard
                 ),
               ),
             ),
-            const Icon(
+            Icon(
               Icons.arrow_forward_ios,
-              size: 16,
-              color: Colors.grey,
+              size: screenSize.width * 0.04, // 4% of screen width
+              color: mustardColor.withOpacity(0.6), // Icon to lighter mustard
             ),
           ],
         ),

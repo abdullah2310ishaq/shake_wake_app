@@ -5,6 +5,10 @@ import '../../providers/cart_provider.dart';
 import '../../models/product_model.dart';
 import 'product_detail_screen.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class MenuScreen extends StatefulWidget {
   const MenuScreen({super.key});
 
@@ -33,15 +37,22 @@ class _MenuScreenState extends State<MenuScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
-        title: const Text('Menu'),
+        title: const Text('Menu',
+            style: TextStyle(color: mustardColor)), // Text to mustard
+        backgroundColor: blackColor, // AppBar background to black
         automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
       body: Consumer<ProductProvider>(
         builder: (context, productProvider, child) {
           if (productProvider.isLoading) {
             return const Center(
-              child: CircularProgressIndicator(),
+              child: CircularProgressIndicator(
+                valueColor: AlwaysStoppedAnimation<Color>(
+                    mustardColor), // Progress indicator to mustard
+              ),
             );
           }
 
@@ -54,11 +65,30 @@ class _MenuScreenState extends State<MenuScreen> {
                   controller: _searchController,
                   decoration: InputDecoration(
                     hintText: 'Search products...',
-                    prefixIcon: const Icon(Icons.search),
+                    hintStyle: TextStyle(
+                        color: mustardColor
+                            .withOpacity(0.6)), // Hint text to lighter mustard
+                    prefixIcon: const Icon(Icons.search,
+                        color: mustardColor), // Icon to mustard
+                    filled: true,
+                    fillColor: blackColor, // Background to black
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(
+                          color: mustardColor), // Border to mustard
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide: const BorderSide(color: mustardColor),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(8),
+                      borderSide:
+                          const BorderSide(color: mustardColor, width: 2),
                     ),
                   ),
+                  style: const TextStyle(
+                      color: mustardColor), // Input text to mustard
                   onChanged: (value) {
                     setState(() {
                       _searchQuery = value;
@@ -82,13 +112,22 @@ class _MenuScreenState extends State<MenuScreen> {
                     return Padding(
                       padding: const EdgeInsets.only(right: 8),
                       child: FilterChip(
-                        label: Text(category),
+                        label: Text(category,
+                            style: TextStyle(
+                                color: isSelected
+                                    ? mustardColor
+                                    : mustardColor.withOpacity(0.8))),
                         selected: isSelected,
                         onSelected: (selected) {
                           productProvider.setSelectedCategory(category);
                         },
-                        selectedColor: const Color(0xFF8B4513).withOpacity(0.2),
-                        checkmarkColor: const Color(0xFF8B4513),
+                        selectedColor: mustardColor
+                            .withOpacity(0.2), // Selected chip to mustard
+                        backgroundColor: blackColor, // Unselected chip to black
+                        checkmarkColor: mustardColor, // Checkmark to mustard
+                        side: BorderSide(
+                            color: mustardColor
+                                .withOpacity(0.5)), // Border to mustard
                       ),
                     );
                   },
@@ -107,7 +146,9 @@ class _MenuScreenState extends State<MenuScreen> {
                       return const Center(
                         child: Text(
                           'No products found',
-                          style: TextStyle(fontSize: 16, color: Colors.grey),
+                          style: TextStyle(
+                              fontSize: 16,
+                              color: mustardColor), // Text to mustard
                         ),
                       );
                     }
@@ -161,11 +202,11 @@ class _ProductCard extends StatelessWidget {
       },
       child: Container(
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: blackColor, // Card background to black
           borderRadius: BorderRadius.circular(12),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: mustardColor.withOpacity(0.1), // Shadow to mustard
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -219,6 +260,7 @@ class _ProductCard extends StatelessWidget {
                             fontSize: fontSizeTitle.clamp(
                                 12.0, 16.0), // Clamp font size for readability
                             fontWeight: FontWeight.bold,
+                            color: mustardColor, // Name to mustard
                           ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis, // Handle overflow
@@ -230,7 +272,8 @@ class _ProductCard extends StatelessWidget {
                           product.description,
                           style: TextStyle(
                             fontSize: fontSizeDescription.clamp(10.0, 12.0),
-                            color: Colors.grey,
+                            color: mustardColor.withOpacity(
+                                0.6), // Description to lighter mustard
                           ),
                           maxLines: isSmallScreen
                               ? 1
@@ -249,7 +292,7 @@ class _ProductCard extends StatelessWidget {
                                 'Rs. ${product.price.toStringAsFixed(0)}',
                                 style: TextStyle(
                                   fontSize: fontSizePrice.clamp(12.0, 16.0),
-                                  color: const Color(0xFF8B4513),
+                                  color: mustardColor, // Price to mustard
                                   fontWeight: FontWeight.bold,
                                 ),
                                 overflow: TextOverflow.ellipsis,
@@ -269,20 +312,26 @@ class _ProductCard extends StatelessWidget {
                                           .showSnackBar(
                                         SnackBar(
                                           content: Text(
-                                              '${product.name} added to cart'),
+                                              '${product.name} added to cart',
+                                              style: const TextStyle(
+                                                  color:
+                                                      blackColor)), // Text to black
                                           duration: const Duration(seconds: 1),
+                                          backgroundColor:
+                                              mustardColor, // SnackBar to mustard
                                         ),
                                       );
                                     },
                                     child: Container(
                                       padding: EdgeInsets.all(padding * 0.5),
                                       decoration: BoxDecoration(
-                                        color: const Color(0xFF8B4513),
+                                        color:
+                                            mustardColor, // Button to mustard
                                         borderRadius: BorderRadius.circular(6),
                                       ),
                                       child: Icon(
                                         Icons.add,
-                                        color: Colors.white,
+                                        color: blackColor, // Icon to black
                                         size: iconSize.clamp(12.0, 16.0),
                                       ),
                                     ),
@@ -301,13 +350,14 @@ class _ProductCard extends StatelessWidget {
                                       child: Container(
                                         padding: EdgeInsets.all(padding * 0.4),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFF8B4513),
+                                          color:
+                                              mustardColor, // Button to mustard
                                           borderRadius:
                                               BorderRadius.circular(4),
                                         ),
                                         child: Icon(
                                           Icons.remove,
-                                          color: Colors.white,
+                                          color: blackColor, // Icon to black
                                           size: iconSize.clamp(10.0, 12.0),
                                         ),
                                       ),
@@ -323,6 +373,8 @@ class _ProductCard extends StatelessWidget {
                                           fontWeight: FontWeight.bold,
                                           fontSize: fontSizeDescription.clamp(
                                               10.0, 14.0),
+                                          color:
+                                              mustardColor, // Quantity to mustard
                                         ),
                                       ),
                                     ),
@@ -336,13 +388,14 @@ class _ProductCard extends StatelessWidget {
                                       child: Container(
                                         padding: EdgeInsets.all(padding * 0.4),
                                         decoration: BoxDecoration(
-                                          color: const Color(0xFF8B4513),
+                                          color:
+                                              mustardColor, // Button to mustard
                                           borderRadius:
                                               BorderRadius.circular(4),
                                         ),
                                         child: Icon(
                                           Icons.add,
-                                          color: Colors.white,
+                                          color: blackColor, // Icon to black
                                           size: iconSize.clamp(10.0, 12.0),
                                         ),
                                       ),

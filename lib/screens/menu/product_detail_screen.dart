@@ -3,6 +3,10 @@ import 'package:provider/provider.dart';
 import '../../models/product_model.dart';
 import '../../providers/cart_provider.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class ProductDetailScreen extends StatelessWidget {
   final ProductModel product;
 
@@ -13,6 +17,7 @@ class ProductDetailScreen extends StatelessWidget {
     final screenWidth = MediaQuery.of(context).size.width;
 
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       body: CustomScrollView(
         slivers: [
           // Custom Header
@@ -20,7 +25,7 @@ class ProductDetailScreen extends StatelessWidget {
             expandedHeight: 300,
             floating: false,
             pinned: true,
-            backgroundColor: Colors.transparent,
+            backgroundColor: blackColor, // AppBar background to black
             flexibleSpace: FlexibleSpaceBar(
               titlePadding: const EdgeInsets.only(bottom: 16, left: 16),
               title: Text(
@@ -28,7 +33,7 @@ class ProductDetailScreen extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 22,
                   fontWeight: FontWeight.w700,
-                  color: Colors.white,
+                  color: mustardColor, // Title to mustard
                   shadows: [
                     Shadow(
                       color: Colors.black54,
@@ -56,8 +61,8 @@ class ProductDetailScreen extends StatelessWidget {
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          Colors.black.withOpacity(0.6),
-                          Colors.black.withOpacity(0.2),
+                          blackColor.withOpacity(0.6), // Gradient to black
+                          blackColor.withOpacity(0.2),
                         ],
                         begin: Alignment.topCenter,
                         end: Alignment.bottomCenter,
@@ -74,7 +79,7 @@ class ProductDetailScreen extends StatelessWidget {
                     icon: Stack(
                       children: [
                         const Icon(Icons.shopping_cart,
-                            color: Colors.white, size: 28),
+                            color: mustardColor, size: 28), // Icon to mustard
                         if (cart.itemCount > 0)
                           Positioned(
                             right: 0,
@@ -82,11 +87,11 @@ class ProductDetailScreen extends StatelessWidget {
                             child: Container(
                               padding: const EdgeInsets.all(4),
                               decoration: BoxDecoration(
-                                color: Colors.redAccent,
+                                color: mustardColor, // Badge to mustard
                                 borderRadius: BorderRadius.circular(12),
                                 boxShadow: [
                                   BoxShadow(
-                                    color: Colors.redAccent.withOpacity(0.3),
+                                    color: mustardColor.withOpacity(0.3),
                                     blurRadius: 6,
                                     offset: const Offset(0, 2),
                                   ),
@@ -99,7 +104,7 @@ class ProductDetailScreen extends StatelessWidget {
                               child: Text(
                                 '${cart.itemCount}',
                                 style: const TextStyle(
-                                  color: Colors.white,
+                                  color: blackColor, // Text to black
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -122,9 +127,9 @@ class ProductDetailScreen extends StatelessWidget {
           SliverToBoxAdapter(
             child: Container(
               padding: const EdgeInsets.all(16),
-              decoration: const BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.only(
+              decoration: BoxDecoration(
+                color: blackColor, // Background to black
+                borderRadius: const BorderRadius.only(
                   topLeft: Radius.circular(20),
                   topRight: Radius.circular(20),
                 ),
@@ -142,7 +147,7 @@ class ProductDetailScreen extends StatelessWidget {
                           style: const TextStyle(
                             fontSize: 24,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF333333),
+                            color: mustardColor, // Name to mustard
                           ),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
@@ -153,7 +158,7 @@ class ProductDetailScreen extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 22,
                           fontWeight: FontWeight.w700,
-                          color: Color(0xFF8B4513),
+                          color: mustardColor, // Price to mustard
                         ),
                       ),
                     ],
@@ -165,10 +170,12 @@ class ProductDetailScreen extends StatelessWidget {
                     padding:
                         const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
                     decoration: BoxDecoration(
-                      color: const Color(0xFF8B4513).withOpacity(0.1),
+                      color: mustardColor
+                          .withOpacity(0.1), // Background to mustard
                       borderRadius: BorderRadius.circular(20),
                       border: Border.all(
-                        color: const Color(0xFF8B4513).withOpacity(0.3),
+                        color:
+                            mustardColor.withOpacity(0.3), // Border to mustard
                         width: 1,
                       ),
                     ),
@@ -176,7 +183,7 @@ class ProductDetailScreen extends StatelessWidget {
                       product.category,
                       style: const TextStyle(
                         fontSize: 14,
-                        color: Color(0xFF8B4513),
+                        color: mustardColor, // Text to mustard
                         fontWeight: FontWeight.w600,
                       ),
                     ),
@@ -189,18 +196,19 @@ class ProductDetailScreen extends StatelessWidget {
                     style: TextStyle(
                       fontSize: 18,
                       fontWeight: FontWeight.w700,
-                      color: Color(0xFF333333),
+                      color: mustardColor, // Title to mustard
                     ),
                   ),
                   const SizedBox(height: 8),
                   Container(
                     padding: const EdgeInsets.all(12),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: blackColor, // Background to black
                       borderRadius: BorderRadius.circular(12),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: mustardColor
+                              .withOpacity(0.1), // Shadow to mustard
                           spreadRadius: 1,
                           blurRadius: 4,
                           offset: const Offset(0, 2),
@@ -211,7 +219,8 @@ class ProductDetailScreen extends StatelessWidget {
                       product.description,
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey[700],
+                        color: mustardColor
+                            .withOpacity(0.8), // Text to lighter mustard
                         height: 1.5,
                       ),
                     ),
@@ -225,7 +234,7 @@ class ProductDetailScreen extends StatelessWidget {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF333333),
+                        color: mustardColor, // Title to mustard
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -239,10 +248,12 @@ class ProductDetailScreen extends StatelessWidget {
                             vertical: 6,
                           ),
                           decoration: BoxDecoration(
-                            color: Colors.grey.withOpacity(0.05),
+                            color: mustardColor
+                                .withOpacity(0.05), // Background to mustard
                             borderRadius: BorderRadius.circular(16),
                             border: Border.all(
-                              color: Colors.grey.withOpacity(0.2),
+                              color: mustardColor
+                                  .withOpacity(0.2), // Border to mustard
                               width: 1,
                             ),
                           ),
@@ -250,7 +261,7 @@ class ProductDetailScreen extends StatelessWidget {
                             ingredient,
                             style: const TextStyle(
                               fontSize: 14,
-                              color: Color(0xFF333333),
+                              color: mustardColor, // Text to mustard
                             ),
                           ),
                         );
@@ -268,11 +279,11 @@ class ProductDetailScreen extends StatelessWidget {
         padding: const EdgeInsets.all(16),
         margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
         decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.9),
+          color: blackColor, // Background to black
           borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.2),
+              color: mustardColor.withOpacity(0.2), // Shadow to mustard
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, -2),
@@ -290,13 +301,14 @@ class ProductDetailScreen extends StatelessWidget {
                   AnimatedContainer(
                     duration: const Duration(milliseconds: 200),
                     decoration: BoxDecoration(
-                      color: Colors.white,
+                      color: blackColor, // Background to black
                       borderRadius: BorderRadius.circular(12),
                       border: Border.all(
-                          color: const Color(0xFF8B4513), width: 1.5),
+                          color: mustardColor, width: 1.5), // Border to mustard
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.1),
+                          color: mustardColor
+                              .withOpacity(0.1), // Shadow to mustard
                           spreadRadius: 1,
                           blurRadius: 4,
                           offset: const Offset(0, 2),
@@ -310,14 +322,14 @@ class ProductDetailScreen extends StatelessWidget {
                             cart.updateQuantity(product.id, quantity - 1);
                           },
                           icon: const Icon(Icons.remove, size: 20),
-                          color: const Color(0xFF8B4513),
+                          color: mustardColor, // Icon to mustard
                         ),
                         Text(
                           quantity.toString(),
                           style: const TextStyle(
                             fontSize: 18,
                             fontWeight: FontWeight.w700,
-                            color: Color(0xFF333333),
+                            color: mustardColor, // Text to mustard
                           ),
                         ),
                         IconButton(
@@ -325,7 +337,7 @@ class ProductDetailScreen extends StatelessWidget {
                             cart.updateQuantity(product.id, quantity + 1);
                           },
                           icon: const Icon(Icons.add, size: 20),
-                          color: const Color(0xFF8B4513),
+                          color: mustardColor, // Icon to mustard
                         ),
                       ],
                     ),
@@ -342,16 +354,19 @@ class ProductDetailScreen extends StatelessWidget {
                         cart.addItem(product);
                         ScaffoldMessenger.of(context).showSnackBar(
                           SnackBar(
-                            content: Text('${product.name} added to cart'),
+                            content: Text('${product.name} added to cart',
+                                style: const TextStyle(
+                                    color: blackColor)), // Text to black
                             duration: const Duration(seconds: 1),
-                            backgroundColor: const Color(0xFF8B4513),
+                            backgroundColor:
+                                mustardColor, // SnackBar to mustard
                             behavior: SnackBarBehavior.floating,
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(10),
                             ),
                             action: SnackBarAction(
                               label: 'View Cart',
-                              textColor: Colors.white,
+                              textColor: blackColor, // Action text to black
                               onPressed: () {
                                 Navigator.pushNamed(context, '/cart');
                               },
@@ -360,8 +375,8 @@ class ProductDetailScreen extends StatelessWidget {
                         );
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFF8B4513),
-                        foregroundColor: Colors.white,
+                        backgroundColor: mustardColor, // Button to mustard
+                        foregroundColor: blackColor, // Text/icon to black
                         padding: const EdgeInsets.symmetric(vertical: 16),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(12),

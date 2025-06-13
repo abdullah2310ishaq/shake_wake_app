@@ -6,6 +6,10 @@ import '../../providers/order_provider.dart';
 import '../../models/order_model.dart';
 import '../orders/order_confirmation_screen.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class CheckoutScreen extends StatefulWidget {
   const CheckoutScreen({super.key});
 
@@ -17,10 +21,11 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   final _formKey = GlobalKey<FormState>();
   final _addressController = TextEditingController();
   final _notesController = TextEditingController();
-  
+
   OrderType _selectedOrderType = OrderType.delivery;
   DateTime? _selectedTime;
   bool _isASAP = true;
+  String _selectedCity = 'Islamabad'; // Default city for dropdown
 
   @override
   void dispose() {
@@ -67,23 +72,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Please login to place an order'),
-            backgroundColor: Colors.red,
+            backgroundColor: mustardColor, // SnackBar to mustard
           ),
         );
         return;
       }
+
+      // Combine city and address for delivery
+      final address = _selectedOrderType == OrderType.delivery
+          ? '$_selectedCity, ${_addressController.text.trim()}'
+          : 'ShakeWake I-8, Islamabad';
 
       final success = await orderProvider.placeOrder(
         userId: auth.user!.id,
         items: cart.items,
         totalAmount: cart.totalAmount,
         orderType: _selectedOrderType,
-        address: _selectedOrderType == OrderType.delivery 
-            ? _addressController.text.trim()
-            : 'ShakeWake I-8, Islamabad',
+        address: address,
         scheduledTime: _isASAP ? null : _selectedTime,
-        notes: _notesController.text.trim().isEmpty 
-            ? null 
+        notes: _notesController.text.trim().isEmpty
+            ? null
             : _notesController.text.trim(),
       );
 
@@ -101,7 +109,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
         ScaffoldMessenger.of(context).showSnackBar(
           const SnackBar(
             content: Text('Failed to place order. Please try again.'),
-            backgroundColor: Colors.red,
+            backgroundColor: mustardColor, // SnackBar to mustard
+            // Text to black
           ),
         );
       }
@@ -111,8 +120,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
-        title: const Text('Checkout'),
+        title: const Text('Checkout',
+            style: TextStyle(color: mustardColor)), // Title to mustard
+        backgroundColor: blackColor, // AppBar background to black
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
       body: Form(
         key: _formKey,
@@ -130,6 +143,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: mustardColor, // Title to mustard
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -137,8 +151,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         Expanded(
                           child: RadioListTile<OrderType>(
-                            title: const Text('Delivery'),
-                            subtitle: const Text('Get it delivered'),
+                            title: const Text('Delivery',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
+                            subtitle: const Text('Get it delivered',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
                             value: OrderType.delivery,
                             groupValue: _selectedOrderType,
                             onChanged: (value) {
@@ -146,12 +164,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 _selectedOrderType = value!;
                               });
                             },
+                            activeColor:
+                                mustardColor, // Radio button to mustard
                           ),
                         ),
                         Expanded(
                           child: RadioListTile<OrderType>(
-                            title: const Text('Pickup'),
-                            subtitle: const Text('Collect from store'),
+                            title: const Text('Pickup',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
+                            subtitle: const Text('Collect from store',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
                             value: OrderType.pickup,
                             groupValue: _selectedOrderType,
                             onChanged: (value) {
@@ -159,6 +183,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 _selectedOrderType = value!;
                               });
                             },
+                            activeColor:
+                                mustardColor, // Radio button to mustard
                           ),
                         ),
                       ],
@@ -172,7 +198,54 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: mustardColor, // Title to mustard
                         ),
+                      ),
+                      const SizedBox(height: 12),
+                      // City Dropdown
+                      DropdownButtonFormField<String>(
+                        value: _selectedCity,
+                        decoration: InputDecoration(
+                          labelText: 'Select City',
+                          labelStyle: TextStyle(
+                              color: mustardColor
+                                  .withOpacity(0.6)), // Label to mustard
+                          border: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                                color: mustardColor), // Border to mustard
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: mustardColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                const BorderSide(color: mustardColor, width: 2),
+                          ),
+                        ),
+                        dropdownColor:
+                            blackColor, // Dropdown background to black
+                        style: const TextStyle(
+                            color: mustardColor), // Text to mustard
+                        items: const [
+                          DropdownMenuItem(
+                              value: 'Islamabad', child: Text('Islamabad')),
+                          DropdownMenuItem(
+                              value: 'Rawalpindi', child: Text('Rawalpindi')),
+                        ],
+                        onChanged: (value) {
+                          setState(() {
+                            _selectedCity = value!;
+                          });
+                        },
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Please select a city';
+                          }
+                          return null;
+                        },
                       ),
                       const SizedBox(height: 12),
                       TextFormField(
@@ -180,10 +253,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         maxLines: 3,
                         decoration: InputDecoration(
                           hintText: 'Enter your complete address...',
+                          hintStyle: TextStyle(
+                              color: mustardColor
+                                  .withOpacity(0.6)), // Hint to mustard
                           border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(
+                                color: mustardColor), // Border to mustard
+                          ),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide: const BorderSide(color: mustardColor),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(8),
+                            borderSide:
+                                const BorderSide(color: mustardColor, width: 2),
                           ),
                         ),
+                        style: const TextStyle(
+                            color: mustardColor), // Input text to mustard
                         validator: (value) {
                           if (_selectedOrderType == OrderType.delivery &&
                               (value == null || value.trim().isEmpty)) {
@@ -202,6 +291,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         style: TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
+                          color: mustardColor, // Title to mustard
                         ),
                       ),
                       const SizedBox(height: 12),
@@ -209,30 +299,37 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                         width: double.infinity,
                         padding: const EdgeInsets.all(16),
                         decoration: BoxDecoration(
-                          color: const Color(0xFF8B4513).withOpacity(0.1),
+                          color: mustardColor
+                              .withOpacity(0.1), // Background to mustard
                           borderRadius: BorderRadius.circular(8),
                           border: Border.all(
-                            color: const Color(0xFF8B4513).withOpacity(0.3),
+                            color: mustardColor
+                                .withOpacity(0.3), // Border to mustard
                           ),
                         ),
-                        child: const Column(
+                        child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text(
+                            const Text(
                               'ShakeWake I-8',
                               style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
+                                color: mustardColor, // Text to mustard
                               ),
                             ),
-                            SizedBox(height: 4),
+                            const SizedBox(height: 4),
                             Text(
                               'Sector I-8, Islamabad',
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(
+                                  color: mustardColor.withOpacity(
+                                      0.6)), // Text to lighter mustard
                             ),
                             Text(
                               'Open: 9:00 AM - 11:00 PM',
-                              style: TextStyle(color: Colors.grey),
+                              style: TextStyle(
+                                  color: mustardColor.withOpacity(
+                                      0.6)), // Text to lighter mustard
                             ),
                           ],
                         ),
@@ -246,6 +343,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: mustardColor, // Title to mustard
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -253,8 +351,12 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       children: [
                         Expanded(
                           child: RadioListTile<bool>(
-                            title: const Text('ASAP'),
-                            subtitle: const Text('30-45 mins'),
+                            title: const Text('ASAP',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
+                            subtitle: const Text('30-45 mins',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
                             value: true,
                             groupValue: _isASAP,
                             onChanged: (value) {
@@ -263,12 +365,18 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 _selectedTime = null;
                               });
                             },
+                            activeColor:
+                                mustardColor, // Radio button to mustard
                           ),
                         ),
                         Expanded(
                           child: RadioListTile<bool>(
-                            title: const Text('Schedule'),
-                            subtitle: const Text('Pick a time'),
+                            title: const Text('Schedule',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
+                            subtitle: const Text('Pick a time',
+                                style: TextStyle(
+                                    color: mustardColor)), // Text to mustard
                             value: false,
                             groupValue: _isASAP,
                             onChanged: (value) {
@@ -276,6 +384,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 _isASAP = value!;
                               });
                             },
+                            activeColor:
+                                mustardColor, // Radio button to mustard
                           ),
                         ),
                       ],
@@ -289,7 +399,8 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           width: double.infinity,
                           padding: const EdgeInsets.all(16),
                           decoration: BoxDecoration(
-                            border: Border.all(color: Colors.grey),
+                            border: Border.all(
+                                color: mustardColor), // Border to mustard
                             borderRadius: BorderRadius.circular(8),
                           ),
                           child: Text(
@@ -297,7 +408,9 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                                 ? 'Select Date & Time'
                                 : 'Selected: ${_selectedTime!.day}/${_selectedTime!.month}/${_selectedTime!.year} at ${_selectedTime!.hour}:${_selectedTime!.minute.toString().padLeft(2, '0')}',
                             style: TextStyle(
-                              color: _selectedTime == null ? Colors.grey : Colors.black,
+                              color: _selectedTime == null
+                                  ? mustardColor.withOpacity(0.6)
+                                  : mustardColor, // Text to mustard
                             ),
                           ),
                         ),
@@ -311,6 +424,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: mustardColor, // Title to mustard
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -319,10 +433,26 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       maxLines: 3,
                       decoration: InputDecoration(
                         hintText: 'Any special requests or notes...',
+                        hintStyle: TextStyle(
+                            color: mustardColor
+                                .withOpacity(0.6)), // Hint to mustard
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(
+                              color: mustardColor), // Border to mustard
+                        ),
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide: const BorderSide(color: mustardColor),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(8),
+                          borderSide:
+                              const BorderSide(color: mustardColor, width: 2),
                         ),
                       ),
+                      style: const TextStyle(
+                          color: mustardColor), // Input text to mustard
                     ),
                     const SizedBox(height: 24),
 
@@ -332,6 +462,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       style: TextStyle(
                         fontSize: 18,
                         fontWeight: FontWeight.bold,
+                        color: mustardColor, // Title to mustard
                       ),
                     ),
                     const SizedBox(height: 12),
@@ -339,19 +470,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                       width: double.infinity,
                       padding: const EdgeInsets.all(16),
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
+                        color: mustardColor
+                            .withOpacity(0.1), // Background to mustard
                         borderRadius: BorderRadius.circular(8),
-                        border: Border.all(color: Colors.green),
+                        border: Border.all(
+                            color: mustardColor), // Border to mustard
                       ),
                       child: const Row(
                         children: [
-                          Icon(Icons.money, color: Colors.green),
+                          Icon(Icons.money,
+                              color: mustardColor), // Icon to mustard
                           SizedBox(width: 12),
                           Text(
                             'Cash on Delivery (COD)',
                             style: TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.w600,
+                              color: mustardColor, // Text to mustard
                             ),
                           ),
                         ],
@@ -366,10 +501,10 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
             Container(
               padding: const EdgeInsets.all(16),
               decoration: BoxDecoration(
-                color: Colors.white,
+                color: blackColor, // Background to black
                 boxShadow: [
                   BoxShadow(
-                    color: Colors.grey.withOpacity(0.2),
+                    color: mustardColor.withOpacity(0.2), // Shadow to mustard
                     spreadRadius: 1,
                     blurRadius: 4,
                     offset: const Offset(0, -2),
@@ -388,6 +523,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             style: TextStyle(
                               fontSize: 18,
                               fontWeight: FontWeight.bold,
+                              color: mustardColor, // Text to mustard
                             ),
                           ),
                           Text(
@@ -395,7 +531,7 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                             style: const TextStyle(
                               fontSize: 20,
                               fontWeight: FontWeight.bold,
-                              color: Color(0xFF8B4513),
+                              color: mustardColor, // Text to mustard
                             ),
                           ),
                         ],
@@ -406,12 +542,23 @@ class _CheckoutScreenState extends State<CheckoutScreen> {
                           return SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: orderProvider.isLoading ? null : _placeOrder,
+                              onPressed:
+                                  orderProvider.isLoading ? null : _placeOrder,
                               style: ElevatedButton.styleFrom(
-                                padding: const EdgeInsets.symmetric(vertical: 16),
+                                backgroundColor:
+                                    mustardColor, // Button to mustard
+                                foregroundColor:
+                                    blackColor, // Text/icon to black
+                                padding:
+                                    const EdgeInsets.symmetric(vertical: 16),
+                                shape: RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(12),
+                                ),
+                                elevation: 2,
                               ),
                               child: orderProvider.isLoading
-                                  ? const CircularProgressIndicator(color: Colors.white)
+                                  ? const CircularProgressIndicator(
+                                      color: blackColor) // Indicator to black
                                   : const Text(
                                       'Place Order',
                                       style: TextStyle(fontSize: 16),

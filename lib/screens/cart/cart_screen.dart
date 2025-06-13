@@ -4,6 +4,10 @@ import '../../providers/cart_provider.dart';
 import '../../models/cart_item_model.dart';
 import '../checkout/checkout_screen.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class CartScreen extends StatelessWidget {
   const CartScreen({super.key});
 
@@ -11,13 +15,14 @@ class CartScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       extendBody: true, // Ensure content scrolls behind bottom navigation bar
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
         title: const Text(
           'My Cart',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w700,
-            color: Colors.white,
+            color: mustardColor, // Title to mustard
           ),
         ),
         centerTitle: true,
@@ -25,14 +30,15 @@ class CartScreen extends StatelessWidget {
         flexibleSpace: Container(
           decoration: const BoxDecoration(
             gradient: LinearGradient(
-              colors: [Color(0xFF8B4513), Color(0xFFA0522D)],
+              colors: [Colors.black, Colors.black], // Gradient to mustard
               begin: Alignment.topLeft,
               end: Alignment.bottomRight,
             ),
           ),
         ),
         elevation: 4,
-        shadowColor: Colors.black.withOpacity(0.2),
+        shadowColor: blackColor.withOpacity(0.2), // Shadow to black
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
       body: Consumer<CartProvider>(
         builder: (context, cart, child) {
@@ -67,9 +73,12 @@ class CartScreen extends StatelessWidget {
                             cart.removeItem(item.productId);
                             ScaffoldMessenger.of(context).showSnackBar(
                               SnackBar(
-                                content: Text('${item.name} removed from cart'),
+                                content: Text('${item.name} removed from cart',
+                                    style: const TextStyle(
+                                        color: blackColor)), // Text to black
                                 duration: const Duration(seconds: 2),
-                                backgroundColor: const Color(0xFF8B4513),
+                                backgroundColor:
+                                    mustardColor, // SnackBar to mustard
                                 behavior: SnackBarBehavior.floating,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(10),
@@ -92,11 +101,12 @@ class CartScreen extends StatelessWidget {
                     margin: const EdgeInsets.symmetric(
                         horizontal: 16, vertical: 12),
                     decoration: BoxDecoration(
-                      color: Colors.white.withOpacity(0.9),
+                      color: blackColor, // Background to black
                       borderRadius: BorderRadius.circular(16),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.grey.withOpacity(0.2),
+                          color: mustardColor
+                              .withOpacity(0.2), // Shadow to mustard
                           spreadRadius: 1,
                           blurRadius: 4,
                           offset: const Offset(0, -2),
@@ -113,7 +123,7 @@ class CartScreen extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w600,
-                                color: Color(0xFF333333),
+                                color: mustardColor, // Text to mustard
                               ),
                             ),
                             Text(
@@ -121,7 +131,7 @@ class CartScreen extends StatelessWidget {
                               style: const TextStyle(
                                 fontSize: 20,
                                 fontWeight: FontWeight.w700,
-                                color: Color(0xFF8B4513),
+                                color: mustardColor, // Text to mustard
                               ),
                             ),
                           ],
@@ -139,8 +149,9 @@ class CartScreen extends StatelessWidget {
                               );
                             },
                             style: ElevatedButton.styleFrom(
-                              backgroundColor: const Color(0xFF8B4513),
-                              foregroundColor: Colors.white,
+                              backgroundColor:
+                                  mustardColor, // Button to mustard
+                              foregroundColor: blackColor, // Text/icon to black
                               padding: const EdgeInsets.symmetric(vertical: 16),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(12),
@@ -186,7 +197,7 @@ class _EmptyCart extends StatelessWidget {
           Icon(
             Icons.shopping_cart_outlined,
             size: 100,
-            color: Colors.grey.withOpacity(0.5),
+            color: mustardColor.withOpacity(0.5), // Icon to mustard
           ),
           const SizedBox(height: 16),
           const Text(
@@ -194,7 +205,7 @@ class _EmptyCart extends StatelessWidget {
             style: TextStyle(
               fontSize: 24,
               fontWeight: FontWeight.w700,
-              color: Color(0xFF333333),
+              color: mustardColor, // Text to mustard
             ),
           ),
           const SizedBox(height: 8),
@@ -202,7 +213,7 @@ class _EmptyCart extends StatelessWidget {
             'Add some delicious items to get started!',
             style: TextStyle(
               fontSize: 16,
-              color: Colors.grey[600],
+              color: mustardColor.withOpacity(0.6), // Text to lighter mustard
             ),
           ),
           const SizedBox(height: 24),
@@ -212,8 +223,8 @@ class _EmptyCart extends StatelessWidget {
               DefaultTabController.of(context).animateTo(1);
             },
             style: ElevatedButton.styleFrom(
-              backgroundColor: const Color(0xFF8B4513),
-              foregroundColor: Colors.white,
+              backgroundColor: mustardColor, // Button to mustard
+              foregroundColor: blackColor, // Text/icon to black
               padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
@@ -252,15 +263,15 @@ class _CartItemCard extends StatelessWidget {
       margin: const EdgeInsets.only(bottom: 12),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: blackColor, // Background to black
         borderRadius: BorderRadius.circular(16),
         border: Border.all(
-          color: const Color(0xFF8B4513).withOpacity(0.2),
+          color: mustardColor.withOpacity(0.2), // Border to mustard
           width: 1,
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.15),
+            color: mustardColor.withOpacity(0.15), // Shadow to mustard
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -297,7 +308,7 @@ class _CartItemCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
+                    color: mustardColor, // Name to mustard
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -307,7 +318,8 @@ class _CartItemCard extends StatelessWidget {
                   'Rs. ${item.price.toStringAsFixed(0)} each',
                   style: TextStyle(
                     fontSize: 14,
-                    color: Colors.grey[600],
+                    color: mustardColor
+                        .withOpacity(0.6), // Price to lighter mustard
                   ),
                 ),
                 const SizedBox(height: 8),
@@ -316,7 +328,7 @@ class _CartItemCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF8B4513),
+                    color: mustardColor, // Total to mustard
                   ),
                 ),
               ],
@@ -329,11 +341,11 @@ class _CartItemCard extends StatelessWidget {
               Container(
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(12),
-                  border:
-                      Border.all(color: const Color(0xFF8B4513), width: 1.5),
+                  border: Border.all(
+                      color: mustardColor, width: 1.5), // Border to mustard
                   boxShadow: [
                     BoxShadow(
-                      color: Colors.grey.withOpacity(0.1),
+                      color: mustardColor.withOpacity(0.1), // Shadow to mustard
                       spreadRadius: 1,
                       blurRadius: 4,
                       offset: const Offset(0, 2),
@@ -350,14 +362,14 @@ class _CartItemCard extends StatelessWidget {
                         }
                       },
                       icon: const Icon(Icons.remove, size: 20),
-                      color: const Color(0xFF8B4513),
+                      color: mustardColor, // Icon to mustard
                     ),
                     Text(
                       item.quantity.toString(),
                       style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF333333),
+                        color: mustardColor, // Quantity to mustard
                       ),
                     ),
                     IconButton(
@@ -365,7 +377,7 @@ class _CartItemCard extends StatelessWidget {
                         onQuantityChanged(item.quantity + 1);
                       },
                       icon: const Icon(Icons.add, size: 20),
-                      color: const Color(0xFF8B4513),
+                      color: mustardColor, // Icon to mustard
                     ),
                   ],
                 ),
@@ -375,7 +387,7 @@ class _CartItemCard extends StatelessWidget {
                 child: const Text(
                   'Remove',
                   style: TextStyle(
-                    color: Colors.redAccent,
+                    color: mustardColor, // Text to mustard
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),

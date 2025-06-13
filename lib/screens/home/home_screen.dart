@@ -31,7 +31,7 @@ class _HomeScreenState extends State<HomeScreen> {
     const MenuScreen(),
     const CartScreen(),
     const OrderHistoryScreen(),
-    const ProfileScreen(),
+    const BranchesScreen(),
   ];
 
   @override
@@ -67,6 +67,7 @@ class _HomeScreenState extends State<HomeScreen> {
     return ChangeNotifierProvider(
       create: (_) => ProductProvider(),
       child: Scaffold(
+        backgroundColor: blackColor, // Set scaffold background to black
         body: PageView(
           controller: _pageController,
           onPageChanged: (index) {
@@ -80,9 +81,9 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.black,
+          backgroundColor: blackColor,
           elevation: 10,
-          selectedItemColor: const Color(0xFFFFD700),
+          selectedItemColor: mustardColor,
           unselectedItemColor: Colors.grey.withOpacity(0.6),
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
@@ -114,11 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           child: Container(
                             padding: const EdgeInsets.all(4),
                             decoration: BoxDecoration(
-                              color: Colors.redAccent,
+                              color: mustardColor, // Changed to mustard
                               borderRadius: BorderRadius.circular(12),
                               boxShadow: [
                                 BoxShadow(
-                                  color: Colors.redAccent.withOpacity(0.3),
+                                  color: mustardColor.withOpacity(0.3),
                                   blurRadius: 6,
                                   offset: const Offset(0, 2),
                                 ),
@@ -131,7 +132,7 @@ class _HomeScreenState extends State<HomeScreen> {
                             child: Text(
                               '${cart.itemCount}',
                               style: const TextStyle(
-                                color: Colors.white,
+                                color: blackColor, // Text in black for contrast
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                               ),
@@ -150,8 +151,8 @@ class _HomeScreenState extends State<HomeScreen> {
               label: 'Orders',
             ),
             const BottomNavigationBarItem(
-              icon: Icon(Icons.person, size: 28),
-              label: 'Profile',
+              icon: Icon(Icons.location_city, size: 28),
+              label: 'Branches',
             ),
           ],
         ),
@@ -168,20 +169,21 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               shape: BoxShape.circle,
               gradient: const LinearGradient(
-                colors: [Color(0xFF8B4513), Color(0xFFA0522D)],
+                colors: [mustardColor, mustardColor], // Unified to mustard
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
               ),
               boxShadow: [
                 BoxShadow(
-                  color: const Color(0xFF8B4513).withOpacity(0.3),
+                  color: mustardColor.withOpacity(0.3),
                   blurRadius: 8,
                   offset: const Offset(0, 4),
                 ),
               ],
             ),
             child: const Center(
-              child: Icon(Icons.chat, color: Colors.white, size: 24),
+              child: Icon(Icons.chat,
+                  color: blackColor, size: 24), // Icon in black
             ),
           ),
         ),
@@ -202,6 +204,7 @@ class HomeTab extends StatelessWidget {
           expandedHeight: 200,
           floating: false,
           pinned: true,
+          backgroundColor: blackColor, // AppBar background to black
           flexibleSpace: FlexibleSpaceBar(
             titlePadding: const EdgeInsets.only(bottom: 16, left: 16),
             background: Stack(
@@ -218,8 +221,8 @@ class HomeTab extends StatelessWidget {
                   decoration: BoxDecoration(
                     gradient: LinearGradient(
                       colors: [
-                        Colors.black.withOpacity(0.7),
-                        Colors.black.withOpacity(0.4),
+                        blackColor.withOpacity(0.7),
+                        blackColor.withOpacity(0.4),
                       ],
                       begin: Alignment.topCenter,
                       end: Alignment.bottomCenter,
@@ -230,17 +233,6 @@ class HomeTab extends StatelessWidget {
             ),
           ),
           actions: [
-            IconButton(
-              icon: const Icon(Icons.location_city,
-                  color: mustardColor, size: 28),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => const BranchesScreen()),
-                );
-              },
-            ),
             IconButton(
               icon: const Icon(Icons.person, color: mustardColor, size: 28),
               onPressed: () {
@@ -257,6 +249,7 @@ class HomeTab extends StatelessWidget {
         // Welcome Section
         SliverToBoxAdapter(
           child: Container(
+            color: blackColor, // Background to black
             padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 20),
             child: Consumer<AuthProvider>(
               builder: (context, auth, child) {
@@ -268,7 +261,7 @@ class HomeTab extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
-                        color: Colors.white,
+                        color: mustardColor, // Text to mustard
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -276,7 +269,7 @@ class HomeTab extends StatelessWidget {
                       'Discover your favorite drinks today.',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.white,
+                        color: mustardColor.withOpacity(0.8), // Lighter mustard
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -299,7 +292,7 @@ class HomeTab extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Colors.white,
+                    color: mustardColor, // Title to mustard
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -313,8 +306,7 @@ class HomeTab extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const MenuScreen(),
-                            ),
+                                builder: (context) => const MenuScreen()),
                           );
                         },
                       ),
@@ -328,8 +320,8 @@ class HomeTab extends StatelessWidget {
                           Navigator.push(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => const OrderHistoryScreen(),
-                            ),
+                                builder: (context) =>
+                                    const OrderHistoryScreen()),
                           );
                         },
                       ),
@@ -353,7 +345,7 @@ class HomeTab extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
+                    color: mustardColor, // Title to mustard
                   ),
                 ),
                 const SizedBox(height: 16),
@@ -363,7 +355,7 @@ class HomeTab extends StatelessWidget {
                       return const Center(
                         child: CircularProgressIndicator(
                           valueColor:
-                              AlwaysStoppedAnimation<Color>(Color(0xFF8B4513)),
+                              AlwaysStoppedAnimation<Color>(mustardColor),
                         ),
                       );
                     }
@@ -416,15 +408,15 @@ class _QuickActionCard extends StatelessWidget {
       child: AnimatedContainer(
         duration: const Duration(milliseconds: 200),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: blackColor, // Card background to black
           borderRadius: BorderRadius.circular(12),
           border: Border.all(
-            color: const Color(0xFF8B4513),
+            color: mustardColor, // Border to mustard
             width: 2,
           ),
           boxShadow: [
             BoxShadow(
-              color: Colors.grey.withOpacity(0.1),
+              color: mustardColor.withOpacity(0.1),
               spreadRadius: 1,
               blurRadius: 4,
               offset: const Offset(0, 2),
@@ -437,7 +429,7 @@ class _QuickActionCard extends StatelessWidget {
             Icon(
               icon,
               size: 32,
-              color: const Color(0xFF8B4513),
+              color: mustardColor, // Icon to mustard
             ),
             const SizedBox(height: 8),
             Text(
@@ -445,7 +437,7 @@ class _QuickActionCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 14,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF333333),
+                color: mustardColor, // Text to mustard
               ),
               textAlign: TextAlign.center,
             ),
@@ -466,11 +458,11 @@ class _ProductCard extends StatelessWidget {
     return AnimatedContainer(
       duration: const Duration(milliseconds: 200),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: blackColor, // Card background to black
         borderRadius: BorderRadius.circular(12),
         boxShadow: [
           BoxShadow(
-            color: Colors.grey.withOpacity(0.1),
+            color: mustardColor.withOpacity(0.1),
             spreadRadius: 1,
             blurRadius: 4,
             offset: const Offset(0, 2),
@@ -506,7 +498,7 @@ class _ProductCard extends StatelessWidget {
                   style: const TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
+                    color: mustardColor, // Name to mustard
                   ),
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
@@ -516,7 +508,7 @@ class _ProductCard extends StatelessWidget {
                   'Rs. ${product.price.toStringAsFixed(0)}',
                   style: const TextStyle(
                     fontSize: 14,
-                    color: Color(0xFF8B4513),
+                    color: mustardColor, // Price to mustard
                     fontWeight: FontWeight.w600,
                   ),
                 ),
@@ -531,7 +523,7 @@ class _ProductCard extends StatelessWidget {
                         SnackBar(
                           content: Text('${product.name} added to cart'),
                           duration: const Duration(seconds: 1),
-                          backgroundColor: const Color(0xFF8B4513),
+                          backgroundColor: mustardColor, // SnackBar to mustard
                           behavior: SnackBarBehavior.floating,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -540,8 +532,8 @@ class _ProductCard extends StatelessWidget {
                       );
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFF8B4513),
-                      foregroundColor: Colors.white,
+                      backgroundColor: mustardColor, // Button to mustard
+                      foregroundColor: blackColor, // Text/icon to black
                       padding: const EdgeInsets.symmetric(vertical: 8),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(8),

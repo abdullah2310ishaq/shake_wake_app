@@ -1,24 +1,35 @@
 import 'package:flutter/material.dart';
 import 'package:url_launcher/url_launcher.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class BranchesScreen extends StatelessWidget {
   const BranchesScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
         title: const Text(
           'Our Branches',
           style: TextStyle(
             fontSize: 22,
             fontWeight: FontWeight.w700,
+            color: mustardColor, // Text to mustard
           ),
         ),
         centerTitle: true,
+        backgroundColor: blackColor, // AppBar background to black
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
       body: ListView(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
         children: [
           _buildBranchCard(
             context,
@@ -28,7 +39,7 @@ class BranchesScreen extends StatelessWidget {
             'Mon-Sun: 10:00 AM - 12:00 AM',
             'https://maps.google.com/?q=I-8+Markaz+Islamabad',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: screenSize.height * 0.02), // 2% of screen height
           _buildBranchCard(
             context,
             'ShakeWake F-7 Markaz',
@@ -37,7 +48,7 @@ class BranchesScreen extends StatelessWidget {
             'Mon-Sun: 10:00 AM - 12:00 AM',
             'https://maps.google.com/?q=F-7+Markaz+Islamabad',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: screenSize.height * 0.02), // 2% of screen height
           _buildBranchCard(
             context,
             'ShakeWake Blue Area',
@@ -46,7 +57,7 @@ class BranchesScreen extends StatelessWidget {
             'Mon-Sun: 10:00 AM - 12:00 AM',
             'https://maps.google.com/?q=Blue+Area+Islamabad',
           ),
-          const SizedBox(height: 16),
+          SizedBox(height: screenSize.height * 0.02), // 2% of screen height
           _buildBranchCard(
             context,
             'ShakeWake Bahria Town',
@@ -68,17 +79,25 @@ class BranchesScreen extends StatelessWidget {
     String hours,
     String mapUrl,
   ) {
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+
     return Card(
       elevation: 4,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(
+            screenSize.width * 0.04), // 4% of screen width
       ),
       child: Container(
-        padding: const EdgeInsets.all(16),
+        padding: EdgeInsets.all(screenSize.width * 0.04), // 4% of screen width
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(16),
-          gradient: const LinearGradient(
-            colors: [Color(0xFF8B4513), Color(0xFFA0522D)],
+          borderRadius: BorderRadius.circular(
+              screenSize.width * 0.04), // 4% of screen width
+          gradient: LinearGradient(
+            colors: [
+              mustardColor,
+              mustardColor.withOpacity(0.7)
+            ], // Mustard gradient
             begin: Alignment.topLeft,
             end: Alignment.bottomRight,
           ),
@@ -88,57 +107,70 @@ class BranchesScreen extends StatelessWidget {
           children: [
             Text(
               name,
-              style: const TextStyle(
-                fontSize: 20,
+              style: TextStyle(
+                fontSize: screenSize.width * 0.05, // 5% of screen width
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: blackColor, // Text to black
               ),
             ),
-            const SizedBox(height: 12),
+            SizedBox(
+                height: screenSize.height * 0.015), // 1.5% of screen height
             Row(
               children: [
-                const Icon(Icons.location_on, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
+                Icon(
+                  Icons.location_on,
+                  color: blackColor, // Icon to black
+                  size: screenSize.width * 0.05, // 5% of screen width
+                ),
+                SizedBox(width: screenSize.width * 0.02), // 2% of screen width
                 Expanded(
                   child: Text(
                     address,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      color: Colors.white,
+                    style: TextStyle(
+                      fontSize: screenSize.width * 0.04, // 4% of screen width
+                      color: blackColor, // Text to black
                     ),
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: screenSize.height * 0.01), // 1% of screen height
             Row(
               children: [
-                const Icon(Icons.phone, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
+                Icon(
+                  Icons.phone,
+                  color: blackColor, // Icon to black
+                  size: screenSize.width * 0.05, // 5% of screen width
+                ),
+                SizedBox(width: screenSize.width * 0.02), // 2% of screen width
                 Text(
                   phone,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.04, // 4% of screen width
+                    color: blackColor, // Text to black
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 8),
+            SizedBox(height: screenSize.height * 0.01), // 1% of screen height
             Row(
               children: [
-                const Icon(Icons.access_time, color: Colors.white, size: 20),
-                const SizedBox(width: 8),
+                Icon(
+                  Icons.access_time,
+                  color: blackColor, // Icon to black
+                  size: screenSize.width * 0.05, // 5% of screen width
+                ),
+                SizedBox(width: screenSize.width * 0.02), // 2% of screen width
                 Text(
                   hours,
-                  style: const TextStyle(
-                    fontSize: 16,
-                    color: Colors.white,
+                  style: TextStyle(
+                    fontSize: screenSize.width * 0.04, // 4% of screen width
+                    color: blackColor, // Text to black
                   ),
                 ),
               ],
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: screenSize.height * 0.02), // 2% of screen height
             SizedBox(
               width: double.infinity,
               child: ElevatedButton.icon(
@@ -149,24 +181,46 @@ class BranchesScreen extends StatelessWidget {
                   } else {
                     if (context.mounted) {
                       ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Could not open map'),
+                        SnackBar(
+                          content: const Text(
+                            'Could not open map',
+                            style:
+                                TextStyle(color: blackColor), // Text to black
+                          ),
+                          backgroundColor:
+                              mustardColor, // Background to mustard
+                          behavior: SnackBarBehavior.floating,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
                         ),
                       );
                     }
                   }
                 },
-                icon: const Icon(Icons.map, color: Colors.white),
-                label: const Text(
+                icon: Icon(
+                  Icons.map,
+                  color: blackColor, // Icon to black
+                ),
+                label: Text(
                   'Get Directions',
-                  style: TextStyle(color: Colors.white),
+                  style: TextStyle(
+                    color: blackColor, // Text to black
+                    fontSize: screenSize.width * 0.04, // 4% of screen width
+                  ),
                 ),
                 style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.white.withOpacity(0.2),
-                  padding: const EdgeInsets.symmetric(vertical: 12),
-                  shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(8),
+                  backgroundColor: mustardColor
+                      .withOpacity(0.3), // Background to lighter mustard
+                  padding: EdgeInsets.symmetric(
+                    vertical:
+                        screenSize.height * 0.015, // 1.5% of screen height
                   ),
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(
+                        screenSize.width * 0.02), // 2% of screen width
+                  ),
+                  elevation: 2,
                 ),
               ),
             ),

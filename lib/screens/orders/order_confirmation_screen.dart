@@ -3,6 +3,10 @@ import '../../models/order_model.dart';
 import '../home/home_screen.dart';
 import 'order_tracking_screen.dart';
 
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
+
 class OrderConfirmationScreen extends StatelessWidget {
   final OrderModel order;
 
@@ -10,227 +14,276 @@ class OrderConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String selectedCity = 'Islamabad';
+    // Get screen size for responsive scaling
+    final screenSize = MediaQuery.of(context).size;
+    final padding =
+        EdgeInsets.all(screenSize.width * 0.04); // 4% of screen width
+    final buttonPadding = EdgeInsets.symmetric(
+      vertical: screenSize.height * 0.02, // 2% of screen height
+      horizontal: screenSize.width * 0.04, // 4% of screen width
+    );
+
     return Scaffold(
+      backgroundColor: blackColor, // Set scaffold background to black
       appBar: AppBar(
-        title: const Text('Order Confirmed'),
+        title: const Text('Order Confirmed',
+            style: TextStyle(color: mustardColor)), // Title to mustard
+        backgroundColor: blackColor, // AppBar background to black
         automaticallyImplyLeading: false,
+        iconTheme: const IconThemeData(color: mustardColor), // Icons to mustard
       ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
+      body: SafeArea(
         child: Column(
           children: [
             Expanded(
               child: SingleChildScrollView(
+                padding: padding,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
                     // Success Icon
                     Container(
-                      width: 120,
-                      height: 120,
+                      width: screenSize.width * 0.3, // 30% of screen width
+                      height:
+                          screenSize.width * 0.3, // Keep square aspect ratio
                       decoration: BoxDecoration(
-                        color: Colors.green.withOpacity(0.1),
+                        color: mustardColor
+                            .withOpacity(0.1), // Background to mustard
                         shape: BoxShape.circle,
                       ),
-                      child: const Icon(
+                      child: Icon(
                         Icons.check_circle,
-                        size: 80,
-                        color: Colors.green,
+                        size: screenSize.width * 0.2, // 20% of screen width
+                        color: mustardColor, // Icon to mustard
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                        height:
+                            screenSize.height * 0.03), // 3% of screen height
 
-                    const Text(
+                    Text(
                       'Order Placed Successfully!',
                       style: TextStyle(
-                        fontSize: 24,
+                        fontSize: screenSize.width * 0.06, // 6% of screen width
                         fontWeight: FontWeight.bold,
-                        color: Colors.green,
+                        color: mustardColor, // Text to mustard
                       ),
                       textAlign: TextAlign.center,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
                     ),
-                    const SizedBox(height: 8),
+                    SizedBox(
+                        height:
+                            screenSize.height * 0.01), // 1% of screen height
 
                     Text(
                       'Order ID: ${order.id.substring(0, 8).toUpperCase()}',
                       style: TextStyle(
-                        fontSize: 16,
-                        color: Colors.grey[400],
+                        fontSize: screenSize.width * 0.04, // 4% of screen width
+                        color: mustardColor
+                            .withOpacity(0.6), // Text to lighter mustard
                       ),
                     ),
-                    const SizedBox(height: 32),
+                    SizedBox(
+                        height:
+                            screenSize.height * 0.04), // 4% of screen height
 
                     // Order Details Card
                     Card(
+                      color: blackColor, // Card background to black
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            screenSize.width * 0.04), // 4% of screen width
+                      ),
+                      elevation: 2,
+                      shadowColor:
+                          mustardColor.withOpacity(0.2), // Shadow to mustard
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: padding,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Order Details',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: screenSize.width *
+                                    0.045, // 4.5% of screen width
                                 fontWeight: FontWeight.bold,
+                                color: mustardColor, // Title to mustard
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(
+                                height: screenSize.height *
+                                    0.02), // 2% of screen height
                             _DetailRow(
                               label: 'Order Type',
                               value: order.orderType == OrderType.delivery
                                   ? 'Delivery'
                                   : 'Pickup',
-                            ),
-                            Row(
-                              children: [
-                                const Text('City:',
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold)),
-                                const SizedBox(width: 8),
-                                StatefulBuilder(
-                                  builder: (context, setState) {
-                                    return DropdownButton<String>(
-                                      value: selectedCity,
-                                      dropdownColor:
-                                          Theme.of(context).cardTheme.color,
-                                      items: const [
-                                        DropdownMenuItem(
-                                          value: 'Rawalpindi',
-                                          child: Text('Rawalpindi',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                        DropdownMenuItem(
-                                          value: 'Islamabad',
-                                          child: Text('Islamabad',
-                                              style: TextStyle(
-                                                  fontWeight: FontWeight.bold)),
-                                        ),
-                                      ],
-                                      onChanged: (value) {
-                                        if (value != null) {
-                                          setState(() {
-                                            selectedCity = value;
-                                          });
-                                        }
-                                      },
-                                    );
-                                  },
-                                ),
-                              ],
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                             ),
                             _DetailRow(
                               label: 'Address',
-                              value: '$selectedCity, ${order.address}',
+                              value: order
+                                  .address, // Display full address directly
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                             ),
                             _DetailRow(
                               label: 'Order Time',
                               value:
                                   '${order.orderTime.day}/${order.orderTime.month}/${order.orderTime.year} at ${order.orderTime.hour}:${order.orderTime.minute.toString().padLeft(2, '0')}',
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                             ),
                             if (order.scheduledTime != null)
                               _DetailRow(
                                 label: 'Scheduled For',
                                 value:
                                     '${order.scheduledTime!.day}/${order.scheduledTime!.month}/${order.scheduledTime!.year} at ${order.scheduledTime!.hour}:${order.scheduledTime!.minute.toString().padLeft(2, '0')}',
+                                fontSize: screenSize.width *
+                                    0.04, // 4% of screen width
                               ),
-                            const _DetailRow(
+                            _DetailRow(
                               label: 'Payment Method',
                               value: 'Cash on Delivery',
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                             ),
-                            const Divider(),
+                            Divider(
+                                color: mustardColor
+                                    .withOpacity(0.3)), // Divider to mustard
                             _DetailRow(
                               label: 'Total Amount',
                               value:
                                   'Rs. ${order.totalAmount.toStringAsFixed(0)}',
                               isTotal: true,
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                             ),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                        height:
+                            screenSize.height * 0.03), // 3% of screen height
 
                     // Items List
                     Card(
+                      color: blackColor, // Card background to black
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(
+                            screenSize.width * 0.04), // 4% of screen width
+                      ),
+                      elevation: 2,
+                      shadowColor:
+                          mustardColor.withOpacity(0.2), // Shadow to mustard
                       child: Padding(
-                        padding: const EdgeInsets.all(16),
+                        padding: padding,
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            const Text(
+                            Text(
                               'Items Ordered',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: screenSize.width *
+                                    0.045, // 4.5% of screen width
                                 fontWeight: FontWeight.bold,
+                                color: mustardColor, // Title to mustard
                               ),
                             ),
-                            const SizedBox(height: 16),
-                            ...order.items
-                                .map((item) => Padding(
-                                      padding: const EdgeInsets.only(bottom: 8),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceBetween,
-                                        children: [
-                                          Expanded(
-                                            child: Text(
-                                              '${item.name} x${item.quantity}',
-                                              style:
-                                                  const TextStyle(fontSize: 16),
-                                            ),
+                            SizedBox(
+                                height: screenSize.height *
+                                    0.02), // 2% of screen height
+                            ...order.items.map((item) => Padding(
+                                  padding: EdgeInsets.only(
+                                      bottom: screenSize.height *
+                                          0.01), // 1% of screen height
+                                  child: Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      Expanded(
+                                        child: Text(
+                                          '${item.name} x${item.quantity}',
+                                          style: TextStyle(
+                                            fontSize: screenSize.width *
+                                                0.04, // 4% of screen width
+                                            color:
+                                                mustardColor, // Text to mustard
                                           ),
-                                          Text(
-                                            'Rs. ${item.totalPrice.toStringAsFixed(0)}',
-                                            style: const TextStyle(
-                                              fontSize: 16,
-                                              fontWeight: FontWeight.w600,
-                                            ),
-                                          ),
-                                        ],
+                                          maxLines: 2,
+                                          overflow: TextOverflow.ellipsis,
+                                        ),
                                       ),
-                                    ))
-                                ,
+                                      Text(
+                                        'Rs. ${item.totalPrice.toStringAsFixed(0)}',
+                                        style: TextStyle(
+                                          fontSize: screenSize.width *
+                                              0.04, // 4% of screen width
+                                          fontWeight: FontWeight.w600,
+                                          color:
+                                              mustardColor, // Text to mustard
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                )),
                           ],
                         ),
                       ),
                     ),
-                    const SizedBox(height: 24),
+                    SizedBox(
+                        height:
+                            screenSize.height * 0.03), // 3% of screen height
 
                     // Estimated Time
                     Container(
                       width: double.infinity,
-                      padding: const EdgeInsets.all(16),
+                      padding: padding,
                       decoration: BoxDecoration(
-                        color: const Color(0xFF8B4513).withOpacity(0.1),
-                        borderRadius: BorderRadius.circular(12),
+                        color: mustardColor
+                            .withOpacity(0.1), // Background to mustard
+                        borderRadius: BorderRadius.circular(
+                            screenSize.width * 0.03), // 3% of screen width
                         border: Border.all(
-                          color: const Color(0xFF8B4513).withOpacity(0.3),
+                          color: mustardColor
+                              .withOpacity(0.3), // Border to mustard
                         ),
                       ),
                       child: Column(
                         children: [
-                          const Icon(
+                          Icon(
                             Icons.access_time,
-                            size: 32,
-                            color: Color(0xFF8B4513),
+                            size: screenSize.width * 0.08, // 8% of screen width
+                            color: mustardColor, // Icon to mustard
                           ),
-                          const SizedBox(height: 8),
+                          SizedBox(
+                              height: screenSize.height *
+                                  0.01), // 1% of screen height
                           Text(
                             order.orderType == OrderType.delivery
                                 ? 'Estimated Delivery Time'
                                 : 'Estimated Pickup Time',
-                            style: const TextStyle(
-                              fontSize: 16,
+                            style: TextStyle(
+                              fontSize:
+                                  screenSize.width * 0.04, // 4% of screen width
                               fontWeight: FontWeight.bold,
+                              color: mustardColor, // Text to mustard
                             ),
                           ),
-                          const SizedBox(height: 4),
-                          const Text(
+                          SizedBox(
+                              height: screenSize.height *
+                                  0.005), // 0.5% of screen height
+                          Text(
                             '30-45 minutes',
                             style: TextStyle(
-                              fontSize: 14,
-                              color: Colors.grey,
+                              fontSize: screenSize.width *
+                                  0.035, // 3.5% of screen width
+                              color: mustardColor
+                                  .withOpacity(0.6), // Text to lighter mustard
                             ),
                           ),
                         ],
@@ -241,43 +294,67 @@ class OrderConfirmationScreen extends StatelessWidget {
               ),
             ),
             // Bottom Buttons
-            Row(
-              children: [
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                            builder: (context) => const HomeScreen()),
-                        (route) => false,
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
-                    ),
-                    child: const Text('Back to Home'),
-                  ),
-                ),
-                const SizedBox(width: 16),
-                Expanded(
-                  child: ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) =>
-                              OrderTrackingScreen(order: order),
+            Padding(
+              padding: padding,
+              child: Row(
+                children: [
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.pushAndRemoveUntil(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const HomeScreen()),
+                          (route) => false,
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: mustardColor, // Button to mustard
+                        foregroundColor: blackColor, // Text/icon to black
+                        padding: buttonPadding,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              screenSize.width * 0.03), // 3% of screen width
                         ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      padding: const EdgeInsets.symmetric(vertical: 16),
+                        elevation: 2,
+                        textStyle: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.04), // 4% of screen width
+                      ),
+                      child: const Text('Back to Home'),
                     ),
-                    child: const Text('Track Order'),
                   ),
-                ),
-              ],
+                  SizedBox(
+                      width: screenSize.width * 0.04), // 4% of screen width
+                  Expanded(
+                    child: ElevatedButton(
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                OrderTrackingScreen(order: order),
+                          ),
+                        );
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: mustardColor, // Button to mustard
+                        foregroundColor: blackColor, // Text/icon to black
+                        padding: buttonPadding,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(
+                              screenSize.width * 0.03), // 3% of screen width
+                        ),
+                        elevation: 2,
+                        textStyle: TextStyle(
+                            fontSize:
+                                screenSize.width * 0.04), // 4% of screen width
+                      ),
+                      child: const Text('Track Order'),
+                    ),
+                  ),
+                ],
+              ),
             ),
           ],
         ),
@@ -290,34 +367,50 @@ class _DetailRow extends StatelessWidget {
   final String label;
   final String value;
   final bool isTotal;
+  final double fontSize;
 
   const _DetailRow({
     required this.label,
     required this.value,
+    required this.fontSize,
     this.isTotal = false,
   });
 
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(
+          bottom: fontSize * 0.2), // Scale padding with font size
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          Text(
-            label,
-            style: TextStyle(
-              fontSize: 16,
-              color: isTotal ? Theme.of(context).colorScheme.primary : null,
-              fontWeight: isTotal ? FontWeight.bold : null,
+          Expanded(
+            child: Text(
+              label,
+              style: TextStyle(
+                fontSize: fontSize,
+                color: isTotal
+                    ? mustardColor
+                    : mustardColor.withOpacity(0.8), // Text to mustard
+                fontWeight: isTotal ? FontWeight.bold : null,
+              ),
+              maxLines: 1,
+              overflow: TextOverflow.ellipsis,
             ),
           ),
-          Text(
-            value,
-            style: TextStyle(
-              fontSize: 16,
-              color: isTotal ? Theme.of(context).colorScheme.primary : null,
-              fontWeight: isTotal ? FontWeight.bold : null,
+          Expanded(
+            child: Text(
+              value,
+              style: TextStyle(
+                fontSize: fontSize,
+                color: isTotal
+                    ? mustardColor
+                    : mustardColor.withOpacity(0.8), // Text to mustard
+                fontWeight: isTotal ? FontWeight.bold : null,
+              ),
+              maxLines: 2,
+              overflow: TextOverflow.ellipsis,
+              textAlign: TextAlign.end,
             ),
           ),
         ],
