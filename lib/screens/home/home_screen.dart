@@ -9,6 +9,11 @@ import '../cart/cart_screen.dart';
 import '../profile/profile_screen.dart';
 import '../orders/order_history_screen.dart';
 import '../chat/chatbot_screen.dart';
+import '../branches/branches_screen.dart';
+
+// Custom colors
+const Color mustardColor = Color(0xFFFFD700); // Mustard color
+const Color blackColor = Color(0xFF000000); // Black color
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -75,9 +80,9 @@ class _HomeScreenState extends State<HomeScreen> {
           currentIndex: _currentIndex,
           onTap: _onTabTapped,
           type: BottomNavigationBarType.fixed,
-          backgroundColor: Colors.white.withOpacity(0.9),
+          backgroundColor: Colors.black,
           elevation: 10,
-          selectedItemColor: const Color(0xFF8B4513),
+          selectedItemColor: const Color(0xFFFFD700),
           unselectedItemColor: Colors.grey.withOpacity(0.6),
           selectedLabelStyle: const TextStyle(
             fontWeight: FontWeight.w600,
@@ -225,54 +230,24 @@ class HomeTab extends StatelessWidget {
             ),
           ),
           actions: [
-            Consumer<CartProvider>(
-              builder: (context, cart, child) {
-                return IconButton(
-                  icon: Stack(
-                    children: [
-                      const Icon(Icons.shopping_cart,
-                          color: Colors.white, size: 28),
-                      if (cart.itemCount > 0)
-                        Positioned(
-                          right: 0,
-                          top: 0,
-                          child: Container(
-                            padding: const EdgeInsets.all(4),
-                            decoration: BoxDecoration(
-                              color: Colors.redAccent,
-                              borderRadius: BorderRadius.circular(12),
-                              boxShadow: [
-                                BoxShadow(
-                                  color: Colors.redAccent.withOpacity(0.3),
-                                  blurRadius: 6,
-                                  offset: const Offset(0, 2),
-                                ),
-                              ],
-                            ),
-                            constraints: const BoxConstraints(
-                              minWidth: 18,
-                              minHeight: 18,
-                            ),
-                            child: Text(
-                              '${cart.itemCount}',
-                              style: const TextStyle(
-                                color: Colors.white,
-                                fontSize: 10,
-                                fontWeight: FontWeight.bold,
-                              ),
-                              textAlign: TextAlign.center,
-                            ),
-                          ),
-                        ),
-                    ],
-                  ),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => const CartScreen()),
-                    );
-                  },
+            IconButton(
+              icon: const Icon(Icons.location_city,
+                  color: mustardColor, size: 28),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const BranchesScreen()),
+                );
+              },
+            ),
+            IconButton(
+              icon: const Icon(Icons.person, color: mustardColor, size: 28),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (context) => const ProfileScreen()),
                 );
               },
             ),
@@ -293,7 +268,7 @@ class HomeTab extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 28,
                         fontWeight: FontWeight.w700,
-                        color: Color(0xFF333333),
+                        color: Colors.white,
                       ),
                     ),
                     const SizedBox(height: 8),
@@ -301,7 +276,7 @@ class HomeTab extends StatelessWidget {
                       'Discover your favorite drinks today.',
                       style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey[600],
+                        color: Colors.white,
                         fontWeight: FontWeight.w400,
                       ),
                     ),
@@ -324,7 +299,7 @@ class HomeTab extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 20,
                     fontWeight: FontWeight.w700,
-                    color: Color(0xFF333333),
+                    color: Colors.white,
                   ),
                 ),
                 const SizedBox(height: 16),

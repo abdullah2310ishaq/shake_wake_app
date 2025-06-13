@@ -193,7 +193,7 @@ class OrderTrackingScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                    )).toList(),
+                    )),
                     const Divider(),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
@@ -258,7 +258,7 @@ class _OrderStatusTracker extends StatelessWidget {
       children: [
         Row(
           children: [
-            _StatusCircle(
+            const _StatusCircle(
               isActive: true,
               isCompleted: true,
             ),
@@ -290,7 +290,7 @@ class _OrderStatusTracker extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            _StatusLabel(
+            const _StatusLabel(
               label: 'Order Placed',
               isActive: true,
               isCompleted: true,

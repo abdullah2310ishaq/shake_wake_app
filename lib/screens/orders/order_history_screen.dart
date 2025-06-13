@@ -305,7 +305,7 @@ class _OrderCard extends StatelessWidget {
     );
     
     // Switch to cart tab
-    DefaultTabController.of(context)?.animateTo(2);
+    DefaultTabController.of(context).animateTo(2);
   }
 }
 

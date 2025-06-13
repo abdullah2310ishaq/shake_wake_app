@@ -209,7 +209,7 @@ class _EmptyCart extends StatelessWidget {
           ElevatedButton(
             onPressed: () {
               // Navigate to menu tab
-              DefaultTabController.of(context)?.animateTo(1);
+              DefaultTabController.of(context).animateTo(1);
             },
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF8B4513),

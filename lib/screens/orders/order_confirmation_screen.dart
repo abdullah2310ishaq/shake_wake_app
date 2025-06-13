@@ -10,6 +10,7 @@ class OrderConfirmationScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String selectedCity = 'Islamabad';
     return Scaffold(
       appBar: AppBar(
         title: const Text('Order Confirmed'),
@@ -52,124 +53,146 @@ class OrderConfirmationScreen extends StatelessWidget {
 
                     Text(
                       'Order ID: ${order.id.substring(0, 8).toUpperCase()}',
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
-                        color: Colors.grey,
+                        color: Colors.grey[400],
                       ),
                     ),
                     const SizedBox(height: 32),
 
                     // Order Details Card
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Order Details',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Order Details',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-
-                          _DetailRow(
-                            label: 'Order Type',
-                            value: order.orderType == OrderType.delivery 
-                                ? 'Delivery' 
-                                : 'Pickup',
-                          ),
-                          _DetailRow(
-                            label: 'Address',
-                            value: order.address,
-                          ),
-                          _DetailRow(
-                            label: 'Order Time',
-                            value: '${order.orderTime.day}/${order.orderTime.month}/${order.orderTime.year} at ${order.orderTime.hour}:${order.orderTime.minute.toString().padLeft(2, '0')}',
-                          ),
-                          if (order.scheduledTime != null)
+                            const SizedBox(height: 16),
                             _DetailRow(
-                              label: 'Scheduled For',
-                              value: '${order.scheduledTime!.day}/${order.scheduledTime!.month}/${order.scheduledTime!.year} at ${order.scheduledTime!.hour}:${order.scheduledTime!.minute.toString().padLeft(2, '0')}',
+                              label: 'Order Type',
+                              value: order.orderType == OrderType.delivery
+                                  ? 'Delivery'
+                                  : 'Pickup',
                             ),
-                          _DetailRow(
-                            label: 'Payment Method',
-                            value: 'Cash on Delivery',
-                          ),
-                          const Divider(),
-                          _DetailRow(
-                            label: 'Total Amount',
-                            value: 'Rs. ${order.totalAmount.toStringAsFixed(0)}',
-                            isTotal: true,
-                          ),
-                        ],
+                            Row(
+                              children: [
+                                const Text('City:',
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold)),
+                                const SizedBox(width: 8),
+                                StatefulBuilder(
+                                  builder: (context, setState) {
+                                    return DropdownButton<String>(
+                                      value: selectedCity,
+                                      dropdownColor:
+                                          Theme.of(context).cardTheme.color,
+                                      items: const [
+                                        DropdownMenuItem(
+                                          value: 'Rawalpindi',
+                                          child: Text('Rawalpindi',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                        DropdownMenuItem(
+                                          value: 'Islamabad',
+                                          child: Text('Islamabad',
+                                              style: TextStyle(
+                                                  fontWeight: FontWeight.bold)),
+                                        ),
+                                      ],
+                                      onChanged: (value) {
+                                        if (value != null) {
+                                          setState(() {
+                                            selectedCity = value;
+                                          });
+                                        }
+                                      },
+                                    );
+                                  },
+                                ),
+                              ],
+                            ),
+                            _DetailRow(
+                              label: 'Address',
+                              value: '$selectedCity, ${order.address}',
+                            ),
+                            _DetailRow(
+                              label: 'Order Time',
+                              value:
+                                  '${order.orderTime.day}/${order.orderTime.month}/${order.orderTime.year} at ${order.orderTime.hour}:${order.orderTime.minute.toString().padLeft(2, '0')}',
+                            ),
+                            if (order.scheduledTime != null)
+                              _DetailRow(
+                                label: 'Scheduled For',
+                                value:
+                                    '${order.scheduledTime!.day}/${order.scheduledTime!.month}/${order.scheduledTime!.year} at ${order.scheduledTime!.hour}:${order.scheduledTime!.minute.toString().padLeft(2, '0')}',
+                              ),
+                            const _DetailRow(
+                              label: 'Payment Method',
+                              value: 'Cash on Delivery',
+                            ),
+                            const Divider(),
+                            _DetailRow(
+                              label: 'Total Amount',
+                              value:
+                                  'Rs. ${order.totalAmount.toStringAsFixed(0)}',
+                              isTotal: true,
+                            ),
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
 
                     // Items List
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.1),
-                            spreadRadius: 1,
-                            blurRadius: 4,
-                            offset: const Offset(0, 2),
-                          ),
-                        ],
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text(
-                            'Items Ordered',
-                            style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
+                    Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(16),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text(
+                              'Items Ordered',
+                              style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
-                          ),
-                          const SizedBox(height: 16),
-                          ...order.items.map((item) => Padding(
-                            padding: const EdgeInsets.only(bottom: 8),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                              children: [
-                                Expanded(
-                                  child: Text(
-                                    '${item.name} x${item.quantity}',
-                                    style: const TextStyle(fontSize: 16),
-                                  ),
-                                ),
-                                Text(
-                                  'Rs. ${item.totalPrice.toStringAsFixed(0)}',
-                                  style: const TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
-                                  ),
-                                ),
-                              ],
-                            ),
-                          )).toList(),
-                        ],
+                            const SizedBox(height: 16),
+                            ...order.items
+                                .map((item) => Padding(
+                                      padding: const EdgeInsets.only(bottom: 8),
+                                      child: Row(
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.spaceBetween,
+                                        children: [
+                                          Expanded(
+                                            child: Text(
+                                              '${item.name} x${item.quantity}',
+                                              style:
+                                                  const TextStyle(fontSize: 16),
+                                            ),
+                                          ),
+                                          Text(
+                                            'Rs. ${item.totalPrice.toStringAsFixed(0)}',
+                                            style: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.w600,
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ))
+                                ,
+                          ],
+                        ),
                       ),
                     ),
                     const SizedBox(height: 24),
@@ -203,14 +226,11 @@ class OrderConfirmationScreen extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 4),
-                          Text(
-                            order.scheduledTime != null
-                                ? 'As scheduled'
-                                : '30-45 minutes',
-                            style: const TextStyle(
-                              fontSize: 18,
-                              color: Color(0xFF8B4513),
-                              fontWeight: FontWeight.bold,
+                          const Text(
+                            '30-45 minutes',
+                            style: TextStyle(
+                              fontSize: 14,
+                              color: Colors.grey,
                             ),
                           ),
                         ],
@@ -220,38 +240,41 @@ class OrderConfirmationScreen extends StatelessWidget {
                 ),
               ),
             ),
-
-            // Action Buttons
-            Column(
+            // Bottom Buttons
+            Row(
               children: [
-                SizedBox(
-                  width: double.infinity,
+                Expanded(
+                  child: ElevatedButton(
+                    onPressed: () {
+                      Navigator.pushAndRemoveUntil(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const HomeScreen()),
+                        (route) => false,
+                      );
+                    },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
+                    child: const Text('Back to Home'),
+                  ),
+                ),
+                const SizedBox(width: 16),
+                Expanded(
                   child: ElevatedButton(
                     onPressed: () {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => OrderTrackingScreen(order: order),
+                          builder: (context) =>
+                              OrderTrackingScreen(order: order),
                         ),
                       );
                     },
+                    style: ElevatedButton.styleFrom(
+                      padding: const EdgeInsets.symmetric(vertical: 16),
+                    ),
                     child: const Text('Track Order'),
-                  ),
-                ),
-                const SizedBox(height: 12),
-                SizedBox(
-                  width: double.infinity,
-                  child: OutlinedButton(
-                    onPressed: () {
-                      Navigator.pushAndRemoveUntil(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const HomeScreen(),
-                        ),
-                        (route) => false,
-                      );
-                    },
-                    child: const Text('Back to Home'),
                   ),
                 ),
               ],
@@ -284,17 +307,17 @@ class _DetailRow extends StatelessWidget {
           Text(
             label,
             style: TextStyle(
-              fontSize: isTotal ? 16 : 14,
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.normal,
-              color: isTotal ? Colors.black : Colors.grey[600],
+              fontSize: 16,
+              color: isTotal ? Theme.of(context).colorScheme.primary : null,
+              fontWeight: isTotal ? FontWeight.bold : null,
             ),
           ),
           Text(
             value,
             style: TextStyle(
-              fontSize: isTotal ? 18 : 14,
-              fontWeight: isTotal ? FontWeight.bold : FontWeight.w600,
-              color: isTotal ? const Color(0xFF8B4513) : Colors.black,
+              fontSize: 16,
+              color: isTotal ? Theme.of(context).colorScheme.primary : null,
+              fontWeight: isTotal ? FontWeight.bold : null,
             ),
           ),
         ],
